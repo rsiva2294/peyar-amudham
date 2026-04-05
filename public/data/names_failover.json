@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1492,
+        "name_tamil": "அமர்ப்புகழ்",
+        "name_english": "Amarppugazh",
+        "gender": "Boy",
+        "length": 11,
+        "meaning_english": "One whose fame and glory are as eternal and stable as the gods.",
+        "meaning_tamil": "தேவர்களைப் போல நிலைத்த புகழை உடையவன்",
+        "tags": ["eternal", "glory", "fame", "stable", "divine"],
+        "search_slug": "amarppugazhஅமர்ப்புகழ்"
+    },
+    {
+        "id": 1,
+        "name_tamil": "அகக்கடல்",
+        "name_english": "AGAKKADAL",
+        "gender": "Girl",
+        "length": 9,
+        "meaning_english": "One with a heart as vast and deep as the ocean.",
+        "meaning_tamil": "கடல் போன்ற உள்ளத்தை உடையவள்",
+        "tags": ["ocean", "heart", "deep"]
+    },
+    {
+        "id": 2,
+        "name_tamil": "அகக்கண்ணன்",
+        "name_english": "AGAKKANNAN",
+        "gender": "Boy",
+        "length": 10,
+        "meaning_english": "A gracious soul, embodying inner wisdom and divine qualities like Lord Vishnu.",
+        "meaning_tamil": "அருள்மனம் கொண்டவர்/ உள்ளம் / திருமால்",
+        "tags": ["grace", "wisdom", "divine"]
+    },
+    {
+        "id": 3,
+        "name_tamil": "அகக்கண்ணி",
+        "name_english": "AGAKKANNI",
+        "gender": "Girl",
+        "length": 9,
+        "meaning_english": "One with loving eyes, radiating affection and warmth.",
+        "meaning_tamil": "அன்பான கண்களை உடையவள்",
+        "tags": ["love", "affection", "warmth", "kindness"]
+    },
+    {
+        "id": 4,
+        "name_tamil": "அகக்கண்ணு",
+        "name_english": "AGAKKANNU",
+        "gender": "Girl",
+        "length": 9,
+        "meaning_english": "One with kind and affectionate eyes.",
+        "meaning_tamil": "அன்பான கண்களை உடையவள்",
+        "tags": ["kindness", "affection", "eyes", "warmth"]
+    }
+]

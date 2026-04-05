@@ -1,0 +1,7 @@
+src/App.tsx(5,10): error TS1484: 'BabyName' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/App.tsx(6,10): error TS2305: Module '"react-window"' has no exported member 'FixedSizeGrid'.
+src/App.tsx(157,17): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/App.tsx(157,30): error TS7031: Binding element 'rowIndex' implicitly has an 'any' type.
+src/App.tsx(157,40): error TS7031: Binding element 'style' implicitly has an 'any' type.
+src/NameCard.tsx(4,10): error TS1484: 'BabyName' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/SearchFilters.tsx(3,1): error TS6133: 'clsx' is declared but its value is never read.
