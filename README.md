@@ -1,6 +1,7 @@
-# 🍯 Peyar Amudham (பெயர் அமுதம்)
+# 🏺 PEYAR AMUDHAM (பெயர் அமுதம்)
+> **Pure Linguistic Nectar** — A modern digital archive of 30k+ pure, classical Tamil names.
 
-**Peyar Amudham** is a high-performance, premium web application designed to help parents discover **pure and traditional Tamil baby names**. 
+**PEYAR AMUDHAM** is a premium, high-performance web platform designed to help the Tamil community rediscover names that are phonetically beautiful, linguistically pure, and culturally authentic. Built as a "Digital Heritage Museum," this archive is free from modern non-Tamil influences, offering an unfiltered connection to Sangam-era roots.
 
 Unlike generic name generators, this project focuses exclusively on linguistically pure roots, curated from the **Tamil Virtual Academy (TVA)** public records. It features an advanced AI-powered semantic search, allowing users to find names based on complex "vibes" and deep meanings.
 

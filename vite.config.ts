@@ -43,11 +43,11 @@ export default defineConfig({
         ]
       },
       manifest: {
-        name: 'Peyar Amudham',
+        name: 'PEYAR AMUDHAM',
         short_name: 'PeyarAmudham',
-        description: 'Explore 31,000+ pure classical Tamil names with profound meanings and ancestral heritage.',
-        theme_color: '#1E293B',
-        background_color: '#FFFFFF',
+        description: 'Explore 30k+ pure classical Tamil names with profound meanings and ancestral heritage.',
+        theme_color: '#0B0E14',
+        background_color: '#0B0E14',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
