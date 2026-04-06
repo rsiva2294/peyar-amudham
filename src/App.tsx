@@ -27,6 +27,8 @@ function App() {
   
   // 3. AI, Surprise & Contribute State
   const [aiKeywords, setAiKeywords] = useState<string[]>([]);
+  const [aiTamilRoots, setAiTamilRoots] = useState<string[]>([]);
+  const [aiNote, setAiNote] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [surpriseName, setSurpriseName] = useState<BabyName | null>(null);
   const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
@@ -47,6 +49,7 @@ function App() {
     startingLetter,
     lengthFilter,
     aiKeywords,
+    aiTamilRoots,
     showFavoritesOnly,
     favorites
   });
@@ -54,6 +57,12 @@ function App() {
   // 6. Effects
   useEffect(() => {
     setPage(1);
+    // Reset AI results if switching away from magic search or query cleared
+    if (searchType !== 'magic' || !searchQuery.trim()) {
+      setAiKeywords([]);
+      setAiTamilRoots([]);
+      setAiNote(null);
+    }
   }, [searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, showFavoritesOnly]);
 
   // 7. Handlers
@@ -61,8 +70,10 @@ function App() {
     if (!query.trim()) return;
     setIsGenerating(true);
     try {
-      const keywords = await fetchMagicKeywords(query);
-      setAiKeywords(keywords);
+      const response = await fetchMagicKeywords(query);
+      setAiKeywords(response.keywords);
+      setAiTamilRoots(response.tamilRoots);
+      setAiNote(response.culturalNote);
       setPage(1);
     } catch (error: any) {
       console.error("Magic Search Error:", error);
@@ -116,6 +127,38 @@ function App() {
           isGenerating={isGenerating}
           onMagicSearch={handleMagicSearch}
         />
+
+        {aiNote && searchType === 'magic' && filteredNames.length > 0 && (
+          <div className="scholar-note-container" style={{
+            marginBottom: '2rem',
+            padding: '1.5rem',
+            background: 'var(--gold-gradient)',
+            borderRadius: '20px',
+            color: 'white',
+            boxShadow: '0 10px 30px rgba(184, 134, 11, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.25rem',
+            animation: 'modal-pop 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <span style={{ fontSize: '1.5rem' }}>🏺</span>
+            </div>
+            <div>
+              <p style={{ fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.25rem', opacity: 0.8 }}>Scholar's Discovery Note</p>
+              <p style={{ fontSize: '0.95rem', fontWeight: '500', lineHeight: '1.5' }}>{aiNote}</p>
+            </div>
+          </div>
+        )}
         
         <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{ height: '1px', flex: 1, background: 'rgba(212, 175, 55, 0.1)' }}></div>

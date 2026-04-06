@@ -180,7 +180,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                     cursor: isGenerating || !searchQuery.trim() ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {isGenerating ? '...' : 'MAGIC'}
+                  {isGenerating ? 'Consulting Archives...' : 'MAGIC'}
                 </button>
               </div>
             </div>

@@ -9,6 +9,7 @@ export interface FilterOptions {
   startingLetter: string | null;
   lengthFilter: 'All' | 'Short' | 'Medium' | 'Long';
   aiKeywords: string[];
+  aiTamilRoots?: string[];
   showFavoritesOnly: boolean;
   favorites: Set<number>;
 }
@@ -22,6 +23,7 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
     startingLetter,
     lengthFilter,
     aiKeywords,
+    aiTamilRoots = [],
     showFavoritesOnly,
     favorites
   } = options;
@@ -86,14 +88,23 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
       }
     });
 
-    if (searchType === 'magic' && aiKeywords.length > 0) {
+    if (searchType === 'magic' && (aiKeywords.length > 0 || aiTamilRoots.length > 0)) {
       const scoredNames = result.map(name => {
         let score = 0;
         const meaningEng = (name.meaning_english || '').toLowerCase();
         const tagsStr = name.tags?.join(' ').toLowerCase() || '';
-        for (const kw of aiKeywords) {
-           if (meaningEng.includes(kw) || tagsStr.includes(kw)) score++;
+        const nameTa = name.name_tamil || '';
+
+        // Prioritize Tamil Root Match (High Weight: 5)
+        for (const root of aiTamilRoots) {
+          if (nameTa.includes(root)) score += 5;
         }
+
+        // English Keyword Match (Weight: 1)
+        for (const kw of aiKeywords) {
+           if (meaningEng.includes(kw) || tagsStr.includes(kw)) score += 1;
+        }
+        
         return { name, score };
       });
       result = scoredNames
@@ -103,5 +114,5 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
     }
 
     return result;
-  }, [names, searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, aiKeywords, showFavoritesOnly, favorites]);
+  }, [names, searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, aiKeywords, aiTamilRoots, showFavoritesOnly, favorites]);
 }
