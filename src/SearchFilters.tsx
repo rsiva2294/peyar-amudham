@@ -201,11 +201,11 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                     border: 'none',
                     outline: 'none',
                     width: '100%',
-                    fontSize: '1.05rem',
+                    fontSize: isDesktop ? '1.05rem' : '0.9rem',
                     color: 'var(--text-dark)',
                     background: 'transparent',
                     fontWeight: '500',
-                    padding: '4px 0'
+                    padding: isDesktop ? '4px 0' : '0.2rem 0'
                   }}
                 />
                 {searchQuery && (
@@ -217,41 +217,78 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                   </button>
                 )}
               </div>
-
-              {searchType === 'name' && (
-                <div className="predicate-row" style={{
-                  display: 'flex',
-                  gap: '0.5rem',
-                  marginTop: '0.5rem',
-                  paddingTop: '0.5rem',
-                  borderTop: '1px solid rgba(166, 124, 0, 0.05)'
-                }}>
-                  {(['starts', 'contains', 'ends'] as const).map(pred => (
-                    <button
-                      key={pred}
-                      onClick={() => setSearchPredicate(pred)}
-                      className={`predicate-pill ${searchPredicate === pred ? 'active' : ''}`}
-                      style={{
-                        padding: '8px 16px',
-                        borderRadius: '20px',
-                        fontSize: '0.7rem',
-                        fontWeight: '800',
-                        textTransform: 'uppercase',
-                        border: '1.5px solid transparent',
-                        background: searchPredicate === pred ? 'rgba(166, 124, 0, 0.1)' : 'transparent',
-                        color: searchPredicate === pred ? 'var(--primary)' : 'var(--text-muted)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      {pred === 'starts' ? 'Starts with' : pred === 'contains' ? 'Contains' : 'Ends with'}
-                    </button>
-                  ))}
-                </div>
-              )}
             </>
           )}
         </div>
+
+        {/* Name Specific Options: Moved outside to maintain consistent bar height */}
+        {!isDesktop && searchType === 'name' && (
+          <div className="predicate-row mobile-only" style={{
+            display: 'flex',
+            gap: '0.4rem',
+            width: '100%',
+            overflowX: 'auto',
+            paddingBottom: '2px',
+            marginTop: '-0.5rem',
+            marginBottom: '1rem',
+            scrollbarWidth: 'none'
+          }}>
+            {(['starts', 'contains', 'ends'] as const).map(pred => (
+              <button
+                key={pred}
+                onClick={() => setSearchPredicate(pred)}
+                className={`predicate-pill ${searchPredicate === pred ? 'active' : ''}`}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '16px',
+                  fontSize: '0.65rem',
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                  border: '1px solid transparent',
+                  background: searchPredicate === pred ? 'rgba(166, 124, 0, 0.1)' : 'var(--card-bg)',
+                  boxShadow: 'var(--card-shadow)',
+                  color: searchPredicate === pred ? 'var(--primary)' : 'var(--text-muted)',
+                  cursor: 'pointer'
+                }}
+              >
+                {pred === 'starts' ? 'Starts with' : pred === 'contains' ? 'Contains' : 'Ends with'}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {isDesktop && searchType === 'name' && (
+          <div className="predicate-row desktop-only" style={{
+            display: 'flex',
+            gap: '0.5rem',
+            width: '100%',
+            marginTop: '-1rem',
+            marginBottom: '1.25rem'
+          }}>
+            {(['starts', 'contains', 'ends'] as const).map(pred => (
+              <button
+                key={pred}
+                onClick={() => setSearchPredicate(pred)}
+                className={`predicate-pill ${searchPredicate === pred ? 'active' : ''}`}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '0.7rem',
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  border: '1.5px solid transparent',
+                  background: searchPredicate === pred ? 'rgba(166, 124, 0, 0.1)' : 'transparent',
+                  color: searchPredicate === pred ? 'var(--primary)' : 'var(--text-muted)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {pred === 'starts' ? 'Starts with' : pred === 'contains' ? 'Contains' : 'Ends with'}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Filters Group: Gender & Length (Row on Desktop, Hidden on Mobile unless drawer open) */}
         <div className={`filter-options-group ${!isDesktop && !isFiltersExpanded ? 'hide-mobile' : ''}`} style={{
