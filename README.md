@@ -1,37 +1,41 @@
 # 🏺 PEYAR AMUDHAM (பெயர் அமுதம்)
-> **Pure Linguistic Nectar** — A modern digital archive of 30k+ pure, classical Tamil names.
+> **Pure Linguistic Nectar** — A premium, high-performance digital archive of 31,000+ pure, classical Tamil names.
 
-**PEYAR AMUDHAM** is a premium, high-performance web platform designed to help the Tamil community rediscover names that are phonetically beautiful, linguistically pure, and culturally authentic. Built as a "Digital Heritage Museum," this archive is free from modern non-Tamil influences, offering an unfiltered connection to Sangam-era roots.
-
-Unlike generic name generators, this project focuses exclusively on linguistically pure roots, curated from the **Tamil Virtual Academy (TVA)** public records. It features an advanced AI-powered semantic search, allowing users to find names based on complex "vibes" and deep meanings.
+**PEYAR AMUDHAM** is a state-of-the-art web platform designed for the Tamil community to rediscover names that are phonetically beautiful, linguistically pure, and culturally authentic. Built as a "Digital Heritage Museum," this archive is free from modern non-Tamil influences, offering an unfiltered connection to Sangam-era roots.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
+![PWA](https://img.shields.io/badge/PWA-Ready-orange?logo=pwa)
 
 ---
 
 ## ✨ Key Features
 
 - **📖 31,000+ Pure Names**: A massive, curated archive of traditional names categorized by gender, meaning, and origin.
+- **📱 Premium PWA Experience**: Fully installable on iOS, Android, and Desktop. Works offline with advanced service worker caching.
 - **🪄 Magic AI Search**: Powered by **Gemini 2.5 Flash**, users can describe a "vibe" (e.g., *"A brave warrior from the sea"*) to find semantically matching names.
-- **🔡 Bi-Lingual Filtering**: Filter names using both English and Tamil (அ-வ) starting letters.
+- **🔍 Granular Search**:
+    - **Predicates**: Search by "Starts with", "Contains", or "Ends with".
+    - **Language**: Toggle between English and Tamil (அ-வ) starting letters.
+    - **Length**: Filter by Short, Medium, or Long names.
 - **💖 Favorites System**: Persistent local storage for shortlisting names without needing an account.
-- **🎲 Surprise Me**: An immersive, full-screen "random name" discovery tool with smart text-scaling for responsiveness.
-- **🤝 Contribution Portal**: A serverless way for the public to suggest new names directly to the curators.
-- **🌓 Dark Mode**: A premium, state-of-the-art interface that supports system-wide theme switching.
+- **🎲 Surprise Me**: An immersive discovery tool that pulls unique names from the archive with a single click.
+- **🤝 Contribution Portal**: A built-in system for the community to suggest new names for curation.
+- **🌓 Dark-First Design**: A premium interface featuring heritage-inspired gold, sapphire, and ruby gradients.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 19 + Vite
-- **Language**: TypeScript
-- **Styling**: Vanilla CSS (Modern CSS Variables + Container Queries)
-- **AI Integration**: Google Generative AI (@google/generative-ai)
-- **Icons**: Lucide React
-- **Hosting Ready**: Optimized for Vercel or Netlify (SPA routing).
+- **Frontend**: [React 19](https://react.dev/) + [Vite 8](https://vite.dev/)
+- **Logic**: [TypeScript 5.9](https://www.typescriptlang.org/)
+- **Styling**: Vanilla CSS (Modern CSS Variables, Container Queries, and Glassmorphism)
+- **AI Integration**: [Google Generative AI](https://ai.google.dev/) (Gemini 2.5 Flash)
+- **Offline Capabilities**: [Vite PWA Plugin](https://vite-pwa-org.netlify.app/) (Workbox)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Deployment**: Configured for Firebase Hosting
 
 ---
 
@@ -44,7 +48,7 @@ Unlike generic name generators, this project focuses exclusively on linguistical
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/tamil-baby-names.git
+git clone https://github.com/rsiva2294/peyar-amudham.git
 
 # Navigate into the directory
 cd tamil-baby-names
@@ -70,7 +74,7 @@ The app will be available at `http://localhost:5173`.
 
 ## 📂 Data Structure
 
-The name data is stored in `public/data/names.json`. Each name follows this schema:
+The name data is stored in `public/data/names.json`. The application uses a high-performance filtering engine to search through over 31,000 records in real-time.
 
 ```json
 {
@@ -113,4 +117,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-Built with ❤️ for the Tamil Community.
+Built with ❤️ for the Tamil Community by rsiva2294.

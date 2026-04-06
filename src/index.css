@@ -185,8 +185,8 @@ body {
   background: var(--card-bg);
   border: 1.5px solid rgba(166, 124, 0, 0.1);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -456,4 +456,37 @@ button {
   .surprise-btn {
     padding: 0.5rem !important;
   }
+}
+/* Premium Golden Card Animations */
+@keyframes gold-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.golden-card-preview {
+  background-size: 200% auto !important;
+  animation: gold-shimmer 8s linear infinite;
+}
+
+.share-action-btn {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.share-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+.share-action-btn:active {
+  transform: translateY(-1px);
+}
+
+@keyframes modal-pop {
+  0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.share-modal-content {
+  animation: modal-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }

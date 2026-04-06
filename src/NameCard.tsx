@@ -1,5 +1,5 @@
 
-import { Heart } from 'lucide-react';
+import { Heart, Share2 } from 'lucide-react';
 import clsx from 'clsx';
 import type { BabyName } from './types';
 
@@ -7,10 +7,11 @@ interface NameCardProps {
   data: BabyName;
   isFavorite: boolean;
   onToggleFavorite: (id: number) => void;
+  onShare: (name: BabyName) => void;
   style?: React.CSSProperties; // for react-window virtualization
 }
 
-export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFavorite, style }) => {
+export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFavorite, onShare, style }) => {
   const isGirl = data.gender.toLowerCase() === 'girl';
   const tagColor = isGirl ? 'var(--girl-color)' : 'var(--boy-color)';
   const tagBg = isGirl ? 'var(--girl-bg)' : 'var(--boy-bg)';
@@ -20,20 +21,29 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
       <div className="artifact-card" style={{ height: '100%', padding: '1.75rem', display: 'flex', flexDirection: 'column' }}>
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <h2 className="tamil-text text-2xl" style={{ marginBottom: '0.4rem', color: 'var(--text-dark)', lineHeight: '1.2' }}>
+            <h2 className="tamil-text text-xl" style={{ marginBottom: '0.3rem', color: 'var(--text-dark)', lineHeight: '1.2' }}>
               {data.name_tamil}
             </h2>
             <p className="text-sm font-bold latin-name" style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {data.name_english}
             </p>
           </div>
-          <button 
-            className={clsx('icon-btn', { 'active': isFavorite })}
-            onClick={() => onToggleFavorite(data.id)}
-            style={{ color: isFavorite ? 'var(--girl-color)' : 'var(--text-muted)' }}
-          >
-            <Heart size={20} fill={isFavorite ? 'var(--girl-color)' : 'none'} strokeWidth={isFavorite ? 0 : 2} />
-          </button>
+          <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0, marginLeft: '0.5rem' }}>
+            <button 
+              className="icon-btn"
+              onClick={() => onShare(data)}
+              style={{ color: 'var(--text-muted)' }}
+            >
+              <Share2 size={16} strokeWidth={2.5} />
+            </button>
+            <button 
+              className={clsx('icon-btn', { 'active': isFavorite })}
+              onClick={() => onToggleFavorite(data.id)}
+              style={{ color: isFavorite ? 'var(--girl-color)' : 'var(--text-muted)' }}
+            >
+              <Heart size={16} fill={isFavorite ? 'var(--girl-color)' : 'none'} strokeWidth={isFavorite ? 0 : 2.5} />
+            </button>
+          </div>
         </div>
 
         <div className="card-chips" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.25rem', marginBottom: '1.5rem' }}>

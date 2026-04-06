@@ -4,6 +4,7 @@ import { SearchFilters } from './SearchFilters';
 import { NameCard } from './NameCard';
 import { SurpriseModal } from './SurpriseModal';
 import { ContributeModal } from './ContributeModal';
+import { ShareModal } from './ShareModal';
 import { useNamesData } from './hooks/useNamesData';
 import { useFavorites } from './hooks/useFavorites';
 import { useNameFilters } from './hooks/useNameFilters';
@@ -30,6 +31,8 @@ function App() {
   const [surpriseName, setSurpriseName] = useState<BabyName | null>(null);
   const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
   const [isContributeOpen, setIsContributeOpen] = useState(false);
+  const [sharedName, setSharedName] = useState<BabyName | null>(null);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   // 4. Pagination
   const [page, setPage] = useState(1);
@@ -74,6 +77,11 @@ function App() {
     const randomIndex = Math.floor(Math.random() * filteredNames.length);
     setSurpriseName(filteredNames[randomIndex]);
     setIsSurpriseOpen(true);
+  };
+
+  const handleShare = (name: BabyName) => {
+    setSharedName(name);
+    setIsShareOpen(true);
   };
 
   const paginatedNames = filteredNames.slice(0, page * itemsPerPage);
@@ -141,6 +149,7 @@ function App() {
                 data={name} 
                 isFavorite={favorites.has(name.id)}
                 onToggleFavorite={toggleFavorite}
+                onShare={handleShare}
               />
             ))}
           </div>
@@ -224,6 +233,14 @@ function App() {
         isOpen={isContributeOpen}
         onClose={() => setIsContributeOpen(false)}
       />
+
+      {sharedName && (
+        <ShareModal 
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          name={sharedName}
+        />
+      )}
     </div>
   );
 }
