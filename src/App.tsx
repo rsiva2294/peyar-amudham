@@ -18,6 +18,7 @@ function App() {
   // 2. Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState<'name' | 'tag' | 'magic'>('name');
+  const [searchPredicate, setSearchPredicate] = useState<'starts' | 'contains' | 'ends'>('starts');
   const [genderFilter, setGenderFilter] = useState<'All' | 'Boy' | 'Girl'>('All');
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [startingLetter, setStartingLetter] = useState<string | null>(null);
@@ -38,6 +39,7 @@ function App() {
   const filteredNames = useNameFilters(names, {
     searchQuery,
     searchType,
+    searchPredicate,
     genderFilter,
     startingLetter,
     lengthFilter,
@@ -49,7 +51,7 @@ function App() {
   // 6. Effects
   useEffect(() => {
     setPage(1);
-  }, [searchQuery, searchType, genderFilter, startingLetter, lengthFilter, showFavoritesOnly]);
+  }, [searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, showFavoritesOnly]);
 
   // 7. Handlers
   const handleMagicSearch = async (query: string) => {
@@ -101,6 +103,8 @@ function App() {
           setSearchQuery={setSearchQuery}
           searchType={searchType}
           setSearchType={setSearchType}
+          searchPredicate={searchPredicate}
+          setSearchPredicate={setSearchPredicate}
           genderFilter={genderFilter}
           setGenderFilter={setGenderFilter}
           startingLetter={startingLetter}

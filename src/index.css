@@ -196,6 +196,92 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+.predicate-pill {
+  border: 1.5px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.predicate-pill:hover {
+  background: rgba(166, 124, 0, 0.05) !important;
+  color: var(--primary) !important;
+}
+
+.predicate-pill.active {
+  background: rgba(166, 124, 0, 0.1) !important;
+  border-color: rgba(166, 124, 0, 0.2) !important;
+  color: var(--primary) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Toggle & Collapsible Utilities */
+.mobile-only {
+  display: flex !important;
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+.collapsible-filters {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.collapsible-filters.expanded {
+  max-height: 500px; /* High enough to fit alphabet scroller */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 769px) {
+  .collapsible-filters {
+    max-height: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    overflow: visible !important;
+  }
+}
+
+.refine-toggle:active {
+  transform: scale(0.98);
+}
+
+.filters-row-unified {
+  flex-direction: row;
+  overflow: visible;
+}
+
+.alphabet-scroller-compact::-webkit-scrollbar {
+  height: 4px;
+}
+
+.alphabet-scroller-compact::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+}
+
+.alphabet-scroller-compact::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .filters-row-unified {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  .alphabet-section-unified {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
 
 /* Mobile Responsiveness Layer */
 @media (max-width: 768px) {
@@ -265,6 +351,23 @@ button {
   .search-type-toggle .filter-btn {
     padding: 0.4rem 0.75rem !important;
     font-size: 0.75rem !important;
+  }
+
+  .heritage-tag {
+    padding: 3px 8px !important;
+    font-size: 0.65rem !important;
+  }
+
+  .predicate-row {
+    flex-wrap: wrap !important;
+    gap: 0.35rem !important;
+  }
+
+  .predicate-pill {
+    padding: 3px 10px !important;
+    font-size: 0.65rem !important;
+    flex: 1;
+    text-align: center;
   }
 
   .surprise-btn {

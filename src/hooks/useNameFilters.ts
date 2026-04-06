@@ -4,6 +4,7 @@ import type { BabyName } from '../types';
 export interface FilterOptions {
   searchQuery: string;
   searchType: 'name' | 'tag' | 'magic';
+  searchPredicate: 'starts' | 'contains' | 'ends';
   genderFilter: 'All' | 'Boy' | 'Girl';
   startingLetter: string | null;
   lengthFilter: 'All' | 'Short' | 'Medium' | 'Long';
@@ -16,6 +17,7 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
   const {
     searchQuery,
     searchType,
+    searchPredicate,
     genderFilter,
     startingLetter,
     lengthFilter,
@@ -63,10 +65,22 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
       
       const query = searchQuery.toLowerCase().trim();
       if (searchType === 'name') {
-        return (
-          (name.name_english?.toLowerCase().includes(query) ?? false) || 
-          (name.name_tamil?.includes(query) ?? false)
-        );
+        if (searchPredicate === 'starts') {
+          return (
+            (name.name_english?.toLowerCase().startsWith(query) ?? false) || 
+            (name.name_tamil?.startsWith(query) ?? false)
+          );
+        } else if (searchPredicate === 'ends') {
+          return (
+            (name.name_english?.toLowerCase().endsWith(query) ?? false) || 
+            (name.name_tamil?.endsWith(query) ?? false)
+          );
+        } else {
+          return (
+            (name.name_english?.toLowerCase().includes(query) ?? false) || 
+            (name.name_tamil?.includes(query) ?? false)
+          );
+        }
       } else {
         return name.tags?.some(tag => tag.toLowerCase().includes(query)) ?? false;
       }
@@ -83,11 +97,11 @@ export function useNameFilters(names: BabyName[], options: FilterOptions) {
         return { name, score };
       });
       result = scoredNames
-        .filter(sn => sn.score > 0)
-        .sort((a, b) => b.score - a.score)
-        .map(sn => sn.name);
+          .filter(sn => sn.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .map(sn => sn.name);
     }
 
     return result;
-  }, [names, searchQuery, searchType, genderFilter, startingLetter, lengthFilter, aiKeywords, showFavoritesOnly, favorites]);
+  }, [names, searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, aiKeywords, showFavoritesOnly, favorites]);
 }

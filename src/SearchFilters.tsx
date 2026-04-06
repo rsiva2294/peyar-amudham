@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Search, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Sparkles, X, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface SearchFiltersProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   searchType: 'name' | 'tag' | 'magic';
   setSearchType: (type: 'name' | 'tag' | 'magic') => void;
+  searchPredicate: 'starts' | 'contains' | 'ends';
+  setSearchPredicate: (predicate: 'starts' | 'contains' | 'ends') => void;
   genderFilter: 'All' | 'Boy' | 'Girl';
   setGenderFilter: (gender: 'All' | 'Boy' | 'Girl') => void;
   startingLetter: string | null;
@@ -18,10 +20,18 @@ interface SearchFiltersProps {
 }
 
 export const SearchFilters: React.FC<SearchFiltersProps> = ({
-  searchQuery, setSearchQuery, searchType, setSearchType, genderFilter, setGenderFilter,
+  searchQuery, setSearchQuery, searchType, setSearchType, searchPredicate, setSearchPredicate, genderFilter, setGenderFilter,
   startingLetter, setStartingLetter, lengthFilter, setLengthFilter, onSurpriseMe, isGenerating, onMagicSearch
 }) => {
   const [alphabetLang, setAlphabetLang] = useState<'en' | 'ta'>('en');
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+
+  useEffect(() => {
+    const isDesktop = window.innerWidth > 768;
+    if (isDesktop) setIsFiltersExpanded(true);
+  }, []);
+
+  const hasActiveFilters = lengthFilter !== 'All' || startingLetter !== null;
 
   const ENGLISH_ALPHABET = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
   const TAMIL_ALPHABET = ['அ', 'ஆ', 'இ', 'ஈ', 'உ', 'ஊ', 'எ', 'ஏ', 'ஐ', 'ஒ', 'ஓ', 'ஒள', 'க', 'ச', 'ஞ', 'த', 'ந', 'ப', 'ம', 'ய', 'ர', 'ல', 'வ'];
@@ -51,13 +61,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               }}
               className={`filter-btn ${searchType === type ? 'active' : ''}`}
               style={{
-                padding: '0.5rem 1.25rem',
+                padding: '0.45rem 1rem',
                 borderRadius: '16px',
                 border: 'none',
                 background: searchType === type ? 'var(--gold-gradient)' : 'transparent',
                 color: searchType === type ? 'white' : 'var(--text-muted)',
                 fontWeight: '700',
-                fontSize: '0.85rem',
+                fontSize: '0.75rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
                 boxShadow: searchType === type ? '0 4px 12px rgba(184, 134, 11, 0.3)' : 'none',
@@ -95,11 +105,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         </button>
       </div>
 
-      <div className="filter-row main-filters" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'flex-start' }}>
+      <div className="filter-row main-filters" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'flex-start', flexDirection: 'column' }}>
         {/* Search Input Area */}
         <div className="search-input-box" style={{ 
-          flex: '1', 
-          minWidth: '280px',
+          width: '100%',
           background: 'var(--card-bg)',
           borderRadius: '16px',
           display: 'flex',
@@ -129,7 +138,27 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                   fontWeight: '500'
                 }}
               />
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem', gap: '0.5rem' }}>
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    style={{
+                      background: 'rgba(166, 124, 0, 0.05)',
+                      color: 'var(--text-muted)',
+                      padding: '0.5rem',
+                      borderRadius: '10px',
+                      border: '1.5px solid rgba(166, 124, 0, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                  >
+                    <X size={16} />
+                  </button>
+                )}
                 <button 
                   onClick={() => onMagicSearch?.(searchQuery)}
                   disabled={isGenerating || !searchQuery.trim()}
@@ -152,191 +181,294 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               </div>
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <Search size={20} color="var(--primary)" style={{ marginRight: '1rem', opacity: 0.8 }} />
-              <input 
-                type="text" 
-                placeholder={searchType === 'name' ? "Enter pure name (e.g. 'அழகன்')" : "Search by theme (e.g. 'nature')"}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="tamil-text"
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  width: '100%',
-                  fontSize: '1.2rem',
-                  color: 'var(--text-dark)',
-                  background: 'transparent',
-                  fontWeight: '500'
-                }}
-              />
-            </div>
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <Search size={20} color="var(--primary)" style={{ marginRight: '1rem', opacity: 0.8 }} />
+                <input 
+                  type="text" 
+                  placeholder={searchType === 'name' ? "Enter pure name (e.g. 'அழகன்')" : "Search by theme (e.g. 'nature')"}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="tamil-text"
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    width: '100%',
+                    fontSize: '1.05rem',
+                    color: 'var(--text-dark)',
+                    background: 'transparent',
+                    fontWeight: '500'
+                  }}
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--text-muted)',
+                      padding: '0.2rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      opacity: 0.6
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.opacity = '1'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.opacity = '0.6'; }}
+                  >
+                    <X size={18} />
+                  </button>
+                )}
+              </div>
+              
+              {searchType === 'name' && (
+                <div className="predicate-row" style={{ 
+                  display: 'flex', 
+                  gap: '0.5rem', 
+                  marginTop: '0.75rem', 
+                  paddingTop: '0.75rem', 
+                  borderTop: '1px solid rgba(166, 124, 0, 0.05)' 
+                }}>
+                  {(['starts', 'contains', 'ends'] as const).map(pred => (
+                    <button
+                      key={pred}
+                      onClick={() => setSearchPredicate(pred)}
+                      className={`predicate-pill ${searchPredicate === pred ? 'active' : ''}`}
+                      style={{
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '0.7rem',
+                        fontWeight: '700',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        border: '1.5px solid transparent',
+                        background: searchPredicate === pred ? 'rgba(166, 124, 0, 0.1)' : 'transparent',
+                        color: searchPredicate === pred ? 'var(--primary)' : 'var(--text-muted)',
+                        transition: 'all 0.2s ease',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {pred === 'starts' ? 'Starts with' : pred === 'contains' ? 'Contains' : 'Ends with'}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        {/* Gender Filters */}
-        <div className="gender-toggle" style={{ 
+        {/* Gender & Length Row */}
+        <div className="filters-row-top" style={{ 
           display: 'flex', 
-          gap: '0.35rem',
-          background: 'var(--card-bg)',
-          padding: '0.35rem',
-          borderRadius: '16px',
-          boxShadow: 'var(--card-shadow)',
-          border: '1.5px solid rgba(166, 124, 0, 0.05)'
+          gap: '1.25rem', 
+          flexWrap: 'wrap', 
+          width: '100%', 
+          marginBottom: '1rem',
+          alignItems: 'center'
         }}>
-          {(['All', 'Boy', 'Girl'] as const).map(gender => (
-            <button
-              key={gender}
-              onClick={() => setGenderFilter(gender)}
-              style={{
-                padding: '0.65rem 1.25rem',
-                borderRadius: '12px',
-                border: 'none',
-                background: genderFilter === gender 
-                  ? (gender === 'Girl' ? 'var(--ruby-gradient)' : gender === 'Boy' ? 'var(--sapphire-gradient)' : 'var(--gold-gradient)')
-                  : 'transparent',
-                color: genderFilter === gender ? 'white' : 'var(--text-muted)',
-                fontWeight: '800',
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                transition: 'all 0.3s ease',
-                minWidth: '70px',
-                boxShadow: genderFilter === gender ? '0 4px 12px rgba(0,0,0,0.2)' : 'none'
-              }}
-            >
-              {gender}
-            </button>
-          ))}
-        </div>
-        
-        {/* Length Filters */}
-        <div className="length-toggle" style={{ 
-          display: 'flex', 
-          gap: '0.25rem', 
-          background: 'var(--card-bg)', 
-          padding: '0.35rem', 
-          borderRadius: '16px', 
-          boxShadow: 'var(--card-shadow)',
-          border: '1.5px solid rgba(166, 124, 0, 0.05)'
-        }}>
-          {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
-            <button
-              key={len}
-              onClick={() => setLengthFilter(len)}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '10px',
-                border: 'none',
-                background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
-                color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
-                fontWeight: '700',
-                fontSize: '0.8rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                transition: 'all 0.2s'
-              }}
-            >
-              {len}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Alphabet Scroller */}
-      <div className="alphabet-section" style={{ marginTop: '1.5rem' }}>
-        <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
-            Chronological Archive
-          </span>
-          <div className="lang-toggle-container" style={{ 
+          <div className="gender-toggle" style={{ 
             display: 'flex', 
-            gap: '0.25rem', 
-            background: 'rgba(166, 124, 0, 0.05)', 
-            padding: '0.25rem', 
-            borderRadius: '10px',
-            border: '1px solid rgba(166, 124, 0, 0.1)'
+            gap: '0.35rem',
+            background: 'var(--card-bg)',
+            padding: '0.35rem',
+            borderRadius: '16px',
+            boxShadow: 'var(--card-shadow)',
+            border: '1.5px solid rgba(166, 124, 0, 0.05)',
+            flexShrink: 0
           }}>
-            {(['en', 'ta'] as const).map(lang => (
-              <button 
-                key={lang}
-                onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
+            {(['All', 'Boy', 'Girl'] as const).map(gender => (
+              <button
+                key={gender}
+                onClick={() => setGenderFilter(gender)}
                 style={{
-                  background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent',
-                  color: alphabetLang === lang ? 'white' : 'var(--text-muted)',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '12px',
                   border: 'none',
-                  padding: '5px 14px',
-                  borderRadius: '8px',
-                  fontSize: '0.7rem',
-                  cursor: 'pointer',
+                  background: genderFilter === gender 
+                    ? (gender === 'Girl' ? 'var(--ruby-gradient)' : gender === 'Boy' ? 'var(--sapphire-gradient)' : 'var(--gold-gradient)')
+                    : 'transparent',
+                  color: genderFilter === gender ? 'white' : 'var(--text-muted)',
                   fontWeight: '800',
+                  fontSize: '0.75rem',
                   textTransform: 'uppercase',
-                  transition: 'all 0.3s ease'
+                  letterSpacing: '0.05em',
+                  transition: 'all 0.3s ease',
+                  minWidth: '70px',
+                  boxShadow: genderFilter === gender ? '0 4px 12px rgba(0,0,0,0.2)' : 'none'
                 }}
               >
-                {lang === 'en' ? 'English' : 'தமிழ்'}
+                {gender}
               </button>
             ))}
           </div>
+
+          <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ flex: 1, minWidth: '300px' }}>
+            <div className="length-toggle" style={{ 
+              display: 'flex', 
+              gap: '0.25rem', 
+              background: 'var(--card-bg)', 
+              padding: '0.35rem', 
+              borderRadius: '16px', 
+              boxShadow: 'var(--card-shadow)',
+              border: '1.5px solid rgba(166, 124, 0, 0.05)',
+              width: 'fit-content'
+            }}>
+              {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
+                <button
+                  key={len}
+                  onClick={() => setLengthFilter(len)}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
+                    color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
+                    fontWeight: '700',
+                    fontSize: '0.8rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {len}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-        
-        <div className="alphabet-scroller-compact" style={{ 
-          display: 'flex', 
-          gap: '0.75rem', 
-          overflowX: 'auto', 
-          padding: '0.6rem 0.2rem 1.2rem 0.2rem',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
-        }}>
-          <button
-            onClick={() => setStartingLetter(null)}
-            className="alphabet-seal"
-            style={{
-              minWidth: '46px',
-              height: '46px',
-              borderRadius: '12px',
-              border: startingLetter === null ? 'none' : '1.5px solid rgba(212, 175, 55, 0.1)',
-              background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)',
-              color: startingLetter === null ? 'white' : 'var(--text-dark)',
-              fontWeight: '800',
-              boxShadow: startingLetter === null ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
-              flexShrink: 0,
-              textTransform: 'uppercase',
-              fontSize: '0.75rem',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            All
-          </button>
-          {activeAlphabet.map(letter => (
-            <button
-              key={letter}
-              onClick={() => setStartingLetter(letter)}
-              className="alphabet-seal"
-              style={{
-                minWidth: '46px',
-                height: '46px',
-                borderRadius: '12px',
-                background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)',
-                color: startingLetter === letter ? 'white' : 'var(--text-dark)',
-                fontWeight: '800',
-                fontSize: '1rem',
-                boxShadow: startingLetter === letter ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
-                flexShrink: 0,
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
-                fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
-              }}
-              onMouseLeave={(e) => {
-                if (startingLetter !== letter) {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.05)';
-                }
-              }}
-            >
-              {letter}
-            </button>
-          ))}
+
+        {/* Mobile Filter Toggle */}
+        <button 
+          className="refine-toggle mobile-only"
+          onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            padding: '1rem 1.25rem',
+            background: 'var(--card-bg)',
+            borderRadius: '16px',
+            border: '1.5px solid rgba(166, 124, 0, 0.1)',
+            boxShadow: 'var(--card-shadow)',
+            color: 'var(--primary)',
+            fontWeight: '800',
+            fontSize: '0.85rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            marginBottom: '1rem'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Filter size={18} />
+            <span>Refine Archives</span>
+            {hasActiveFilters && (
+              <span style={{ 
+                width: '8px', 
+                height: '8px', 
+                background: 'var(--primary)', 
+                borderRadius: '50%',
+                boxShadow: '0 0 8px var(--primary)'
+              }}></span>
+            )}
+          </div>
+          {isFiltersExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </button>
+
+        {/* Alphabet Block */}
+        <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ width: '100%' }}>
+          <div className="alphabet-section" style={{ width: '100%', marginTop: '0.5rem' }}>
+            <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
+                Chronological Archive
+              </span>
+              <div className="lang-toggle-container" style={{ 
+                display: 'flex', 
+                gap: '0.25rem', 
+                background: 'rgba(166, 124, 0, 0.05)', 
+                padding: '0.25rem', 
+                borderRadius: '10px',
+                border: '1px solid rgba(166, 124, 0, 0.1)'
+              }}>
+                {(['en', 'ta'] as const).map(lang => (
+                  <button 
+                    key={lang}
+                    onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
+                    style={{
+                      background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent',
+                      color: alphabetLang === lang ? 'white' : 'var(--text-muted)',
+                      border: 'none',
+                      padding: '5px 14px',
+                      borderRadius: '8px',
+                      fontSize: '0.65rem',
+                      cursor: 'pointer',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {lang === 'en' ? 'EN' : 'TA'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="alphabet-scroller-compact" style={{ 
+              display: 'flex', 
+              gap: '0.6rem', 
+              overflowX: 'auto', 
+              padding: '0.2rem 0.2rem 1.25rem 0.2rem',
+              scrollbarWidth: 'auto',
+              msOverflowStyle: 'auto',
+              width: '100%'
+            }}>
+              <button
+                onClick={() => setStartingLetter(null)}
+                className="alphabet-seal"
+                style={{
+                  minWidth: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  border: startingLetter === null ? 'none' : '1.5px solid rgba(212, 175, 55, 0.1)',
+                  background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)',
+                  color: startingLetter === null ? 'white' : 'var(--text-dark)',
+                  fontWeight: '800',
+                  boxShadow: startingLetter === null ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
+                  flexShrink: 0,
+                  textTransform: 'uppercase',
+                  fontSize: '0.7rem',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                All
+              </button>
+              {activeAlphabet.map(letter => (
+                <button
+                  key={letter}
+                  onClick={() => setStartingLetter(letter)}
+                  className="alphabet-seal"
+                  style={{
+                    minWidth: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)',
+                    color: startingLetter === letter ? 'white' : 'var(--text-dark)',
+                    fontWeight: '800',
+                    fontSize: '0.9rem',
+                    boxShadow: startingLetter === letter ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
+                    flexShrink: 0,
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
+                    fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
+                  }}
+                >
+                  {letter}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
