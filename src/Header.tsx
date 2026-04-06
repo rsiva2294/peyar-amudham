@@ -25,28 +25,12 @@ export const Header: React.FC<HeaderProps> = ({ showFavoritesOnly, onToggleFavor
 
   return (
     <header className="main-header" style={{ padding: '2rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div className="logo-container" style={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2.5px',
-          background: 'var(--gold-gradient)',
-          borderRadius: '18px',
-          boxShadow: '0 6px 20px rgba(184, 134, 11, 0.25)'
-        }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+        <div className="logo-container">
           <img
             src="/pwa-192.png"
             alt="Peyar Amudham Logo"
             className="logo-img"
-            style={{
-              width: '60px',
-              height: '60px',
-              borderRadius: '16px',
-              background: 'var(--bg-color)',
-              objectFit: 'cover'
-            }}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>

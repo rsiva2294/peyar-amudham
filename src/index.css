@@ -1,5 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Cinzel:wght@600;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
 
+.logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5px;
+  background: var(--gold-gradient);
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(184, 134, 11, 0.25);
+  transition: all 0.3s ease;
+}
+
+.logo-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: var(--bg-color);
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .logo-container {
+    padding: 1.5px !important;
+    border-radius: 12px;
+  }
+
+  .logo-img {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 10px;
+  }
+
+  .brand-title {
+    font-size: 1.25rem !important;
+  }
+
+  .brand-tagline {
+    font-size: 0.6rem !important;
+    letter-spacing: 0.15em !important;
+  }
+}
+
 :root {
   --primary: #B8860B;
   /* Dampened Antique Gold */
@@ -196,6 +239,7 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+
 .predicate-pill {
   border: 1.5px solid transparent;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -233,7 +277,8 @@ button {
 }
 
 .collapsible-filters.expanded {
-  max-height: 500px; /* High enough to fit alphabet scroller */
+  max-height: 500px;
+  /* High enough to fit alphabet scroller */
   opacity: 1;
   pointer-events: auto;
 }
@@ -275,7 +320,7 @@ button {
     align-items: flex-start !important;
     gap: 1rem !important;
   }
-  
+
   .alphabet-section-unified {
     width: 100% !important;
     flex-direction: column !important;
@@ -380,7 +425,8 @@ button {
     padding: 0.6rem 1rem !important;
   }
 
-  .gender-toggle button, .length-toggle button {
+  .gender-toggle button,
+  .length-toggle button {
     padding: 0.5rem 0.8rem !important;
     font-size: 0.7rem !important;
     min-width: 60px !important;
@@ -402,11 +448,11 @@ button {
   .brand-tagline {
     display: none;
   }
-  
+
   .surprise-btn .btn-text {
     display: none;
   }
-  
+
   .surprise-btn {
     padding: 0.5rem !important;
   }

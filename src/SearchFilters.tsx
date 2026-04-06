@@ -39,21 +39,28 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 
   return (
     <div className="search-filters-container" style={{ marginBottom: '2.5rem' }}>
-      {/* Search Type & Actions */}
-      <div className="filter-row top-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div 
+      {/* Top Row: Search Type & Surprise Button */}
+      <div className="filter-row top-row" style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: '1.25rem', 
+        flexWrap: 'wrap', 
+        gap: '1rem' 
+      }}>
+        <div
           className="heritage-box search-type-toggle"
-          style={{ 
-            display: 'flex', 
-            gap: '0.35rem', 
-            background: 'rgba(212, 175, 55, 0.05)', 
-            padding: '0.35rem', 
+          style={{
+            display: 'flex',
+            gap: '0.35rem',
+            background: 'rgba(212, 175, 55, 0.05)',
+            padding: '0.35rem',
             borderRadius: '20px',
-            border: '1.5px solid rgba(212, 175, 55, 0.1)' 
+            border: '1.5px solid rgba(212, 175, 55, 0.1)'
           }}
         >
           {(['name', 'tag', 'magic'] as const).map(type => (
-            <button 
+            <button
               key={type}
               onClick={() => {
                 setSearchType(type);
@@ -78,8 +85,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             </button>
           ))}
         </div>
-        
-        <button 
+
+        <button
           onClick={onSurpriseMe}
           className="surprise-btn"
           style={{
@@ -105,78 +112,75 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         </button>
       </div>
 
-      <div className="filter-row main-filters" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'flex-start', flexDirection: 'column' }}>
+      {/* Main Row: Search + Gender + Length (Single Line on Desktop) */}
+      <div className="filter-group-row" style={{ 
+        display: 'flex', 
+        gap: '1rem', 
+        alignItems: 'flex-start', 
+        width: '100%', 
+        flexWrap: 'wrap',
+        marginBottom: '1.5rem'
+      }}>
         {/* Search Input Area */}
-        <div className="search-input-box" style={{ 
-          width: '100%',
+        <div className="search-input-box magic-box" style={{
+          flex: 4,
+          minWidth: '320px',
+          height: 'auto',
           background: 'var(--card-bg)',
           borderRadius: '16px',
           display: 'flex',
           flexDirection: 'column',
-          padding: searchType === 'magic' ? '0.4rem' : '0.75rem 1.25rem',
+          padding: '10px 16px',
           boxShadow: 'var(--card-shadow)',
-          border: `1.5px solid ${searchType === 'magic' ? 'var(--primary)' : 'rgba(166, 124, 0, 0.1)'}`,
+          border: '1px solid var(--primary)',
           transition: 'all 0.3s ease'
         }}>
           {searchType === 'magic' ? (
-            <div style={{ padding: '0.75rem 1rem' }}>
-              <textarea 
-                placeholder="Describe the vibe... (e.g. 'A beautiful flower that blooms at night')"
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
+              <textarea
+                placeholder="Describe the vibe... (e.g. 'pure and linguistic')"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                rows={2}
+                rows={1}
                 className="tamil-text"
                 style={{
                   border: 'none',
                   outline: 'none',
-                  width: '100%',
-                  fontSize: '1.1rem',
+                  flex: 1,
+                  fontSize: '1.05rem',
                   color: 'var(--text-dark)',
                   background: 'transparent',
                   resize: 'none',
                   opacity: 0.9,
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  padding: '0.4rem 0'
                 }}
               />
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 {searchQuery && (
-                  <button 
+                  <button
                     onClick={() => setSearchQuery('')}
-                    style={{
-                      background: 'rgba(166, 124, 0, 0.05)',
-                      color: 'var(--text-muted)',
-                      padding: '0.5rem',
-                      borderRadius: '10px',
-                      border: '1.5px solid rgba(166, 124, 0, 0.1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                    style={{ background: 'none', color: 'var(--text-muted)', border: 'none', cursor: 'pointer' }}
                   >
                     <X size={16} />
                   </button>
                 )}
-                <button 
+                <button
                   onClick={() => onMagicSearch?.(searchQuery)}
                   disabled={isGenerating || !searchQuery.trim()}
                   style={{
                     background: isGenerating ? 'var(--text-muted)' : 'var(--gold-gradient)',
                     color: 'white',
-                    padding: '0.5rem 1.5rem',
+                    padding: '0.45rem 1.25rem',
                     borderRadius: '10px',
                     border: 'none',
                     fontWeight: '800',
-                    fontSize: '0.8rem',
+                    fontSize: '0.75rem',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    cursor: isGenerating || !searchQuery.trim() ? 'not-allowed' : 'pointer',
-                    boxShadow: !isGenerating && searchQuery.trim() ? '0 4px 12px rgba(133, 101, 0, 0.2)' : 'none'
+                    cursor: isGenerating || !searchQuery.trim() ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {isGenerating ? 'DIVINING...' : 'MAGIC SEARCH'}
+                  {isGenerating ? '...' : 'MAGIC'}
                 </button>
               </div>
             </div>
@@ -184,8 +188,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             <>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <Search size={20} color="var(--primary)" style={{ marginRight: '1rem', opacity: 0.8 }} />
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder={searchType === 'name' ? "Enter pure name (e.g. 'அழகன்')" : "Search by theme (e.g. 'nature')"}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -197,39 +201,27 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                     fontSize: '1.05rem',
                     color: 'var(--text-dark)',
                     background: 'transparent',
-                    fontWeight: '500'
+                    fontWeight: '500',
+                    padding: '4px 0'
                   }}
                 />
                 {searchQuery && (
-                  <button 
+                  <button
                     onClick={() => setSearchQuery('')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--text-muted)',
-                      padding: '0.2rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      opacity: 0.6
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.opacity = '1'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.opacity = '0.6'; }}
+                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', opacity: 0.6 }}
                   >
                     <X size={18} />
                   </button>
                 )}
               </div>
-              
+
               {searchType === 'name' && (
-                <div className="predicate-row" style={{ 
-                  display: 'flex', 
-                  gap: '0.5rem', 
-                  marginTop: '0.75rem', 
-                  paddingTop: '0.75rem', 
-                  borderTop: '1px solid rgba(166, 124, 0, 0.05)' 
+                <div className="predicate-row" style={{
+                  display: 'flex',
+                  gap: '0.5rem',
+                  marginTop: '0.5rem',
+                  paddingTop: '0.5rem',
+                  borderTop: '1px solid rgba(166, 124, 0, 0.05)'
                 }}>
                   {(['starts', 'contains', 'ends'] as const).map(pred => (
                     <button
@@ -237,17 +229,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                       onClick={() => setSearchPredicate(pred)}
                       className={`predicate-pill ${searchPredicate === pred ? 'active' : ''}`}
                       style={{
-                        padding: '4px 12px',
+                        padding: '8px 16px',
                         borderRadius: '20px',
                         fontSize: '0.7rem',
-                        fontWeight: '700',
+                        fontWeight: '800',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
                         border: '1.5px solid transparent',
                         background: searchPredicate === pred ? 'rgba(166, 124, 0, 0.1)' : 'transparent',
                         color: searchPredicate === pred ? 'var(--primary)' : 'var(--text-muted)',
-                        transition: 'all 0.2s ease',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
                       }}
                     >
                       {pred === 'starts' ? 'Starts with' : pred === 'contains' ? 'Contains' : 'Ends with'}
@@ -259,215 +250,208 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           )}
         </div>
 
-        {/* Gender & Length Row */}
-        <div className="filters-row-top" style={{ 
-          display: 'flex', 
-          gap: '1.25rem', 
-          flexWrap: 'wrap', 
-          width: '100%', 
-          marginBottom: '1rem',
+        {/* Gender Toggle */}
+        <div className="gender-toggle" style={{
+          flex: 1,
+          minWidth: '220px',
+          display: 'flex',
+          gap: '0.35rem',
+          background: 'var(--card-bg)',
+          padding: '6px',
+          borderRadius: '16px',
+          boxShadow: 'var(--card-shadow)',
+          border: '1.5px solid rgba(166, 124, 0, 0.05)',
           alignItems: 'center'
         }}>
-          <div className="gender-toggle" style={{ 
-            display: 'flex', 
-            gap: '0.35rem',
+          {(['All', 'Boy', 'Girl'] as const).map(gender => (
+            <button
+              key={gender}
+              onClick={() => setGenderFilter(gender)}
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                borderRadius: '12px',
+                border: 'none',
+                background: genderFilter === gender
+                  ? (gender === 'Girl' ? 'var(--ruby-gradient)' : gender === 'Boy' ? 'var(--sapphire-gradient)' : 'var(--gold-gradient)')
+                  : 'transparent',
+                color: genderFilter === gender ? 'white' : 'var(--text-muted)',
+                fontWeight: '800',
+                fontSize: '0.75rem',
+                textTransform: 'uppercase',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              {gender}
+            </button>
+          ))}
+        </div>
+
+        {/* Length Toggle */}
+        <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ flex: 1.5, minWidth: '320px', display: 'flex' }}>
+          <div className="length-toggle" style={{
+            display: 'flex',
+            gap: '0.25rem',
             background: 'var(--card-bg)',
-            padding: '0.35rem',
+            padding: '6px',
             borderRadius: '16px',
             boxShadow: 'var(--card-shadow)',
             border: '1.5px solid rgba(166, 124, 0, 0.05)',
-            flexShrink: 0
+            width: '100%',
+            alignItems: 'center'
           }}>
-            {(['All', 'Boy', 'Girl'] as const).map(gender => (
+            {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
               <button
-                key={gender}
-                onClick={() => setGenderFilter(gender)}
+                key={len}
+                onClick={() => setLengthFilter(len)}
                 style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '12px',
+                  flex: 1,
+                  padding: '8px 10px',
+                  borderRadius: '10px',
                   border: 'none',
-                  background: genderFilter === gender 
-                    ? (gender === 'Girl' ? 'var(--ruby-gradient)' : gender === 'Boy' ? 'var(--sapphire-gradient)' : 'var(--gold-gradient)')
-                    : 'transparent',
-                  color: genderFilter === gender ? 'white' : 'var(--text-muted)',
+                  background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
+                  color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
                   fontWeight: '800',
-                  fontSize: '0.75rem',
+                  fontSize: '0.8rem',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  transition: 'all 0.3s ease',
-                  minWidth: '70px',
-                  boxShadow: genderFilter === gender ? '0 4px 12px rgba(0,0,0,0.2)' : 'none'
+                  transition: 'all 0.2s'
                 }}
               >
-                {gender}
+                {len}
               </button>
             ))}
           </div>
+        </div>
+      </div>
 
-          <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ flex: 1, minWidth: '300px' }}>
-            <div className="length-toggle" style={{ 
-              display: 'flex', 
-              gap: '0.25rem', 
-              background: 'var(--card-bg)', 
-              padding: '0.35rem', 
-              borderRadius: '16px', 
-              boxShadow: 'var(--card-shadow)',
-              border: '1.5px solid rgba(166, 124, 0, 0.05)',
-              width: 'fit-content'
+      {/* Mobile Filter Toggle */}
+      <button
+        className="refine-toggle mobile-only"
+        onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          padding: '1rem 1.25rem',
+          background: 'var(--card-bg)',
+          borderRadius: '16px',
+          border: '1.5px solid rgba(166, 124, 0, 0.1)',
+          boxShadow: 'var(--card-shadow)',
+          color: 'var(--primary)',
+          fontWeight: '800',
+          fontSize: '0.85rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          marginBottom: '1rem'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Filter size={18} />
+          <span>Refine Archives</span>
+          {hasActiveFilters && (
+            <span style={{
+              width: '8px',
+              height: '8px',
+              background: 'var(--primary)',
+              borderRadius: '50%',
+              boxShadow: '0 0 8px var(--primary)'
+            }}></span>
+          )}
+        </div>
+        {isFiltersExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+      </button>
+
+      {/* Alphabet Block */}
+      <div className={`collapsible-filters-alphabet ${isFiltersExpanded ? 'expanded' : ''}`} style={{ width: '100%' }}>
+        <div className="alphabet-section" style={{ width: '100%', marginTop: '0.5rem' }}>
+          <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
+              Chronological Archive
+            </span>
+            <div className="lang-toggle-container" style={{
+              display: 'flex',
+              gap: '0.25rem',
+              background: 'rgba(166, 124, 0, 0.05)',
+              padding: '0.25rem',
+              borderRadius: '10px',
+              border: '1px solid rgba(166, 124, 0, 0.1)'
             }}>
-              {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
+              {(['en', 'ta'] as const).map(lang => (
                 <button
-                  key={len}
-                  onClick={() => setLengthFilter(len)}
+                  key={lang}
+                  onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
                   style={{
-                    padding: '0.5rem 1rem',
-                    borderRadius: '10px',
+                    background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent',
+                    color: alphabetLang === lang ? 'white' : 'var(--text-muted)',
                     border: 'none',
-                    background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
-                    color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
-                    fontWeight: '700',
-                    fontSize: '0.8rem',
+                    padding: '5px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.65rem',
+                    cursor: 'pointer',
+                    fontWeight: '800',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.3s ease'
                   }}
                 >
-                  {len}
+                  {lang === 'en' ? 'EN' : 'TA'}
                 </button>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Mobile Filter Toggle */}
-        <button 
-          className="refine-toggle mobile-only"
-          onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-          style={{
+          <div className="alphabet-scroller-compact" style={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            padding: '1rem 1.25rem',
-            background: 'var(--card-bg)',
-            borderRadius: '16px',
-            border: '1.5px solid rgba(166, 124, 0, 0.1)',
-            boxShadow: 'var(--card-shadow)',
-            color: 'var(--primary)',
-            fontWeight: '800',
-            fontSize: '0.85rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            marginBottom: '1rem'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Filter size={18} />
-            <span>Refine Archives</span>
-            {hasActiveFilters && (
-              <span style={{ 
-                width: '8px', 
-                height: '8px', 
-                background: 'var(--primary)', 
-                borderRadius: '50%',
-                boxShadow: '0 0 8px var(--primary)'
-              }}></span>
-            )}
-          </div>
-          {isFiltersExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </button>
-
-        {/* Alphabet Block */}
-        <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ width: '100%' }}>
-          <div className="alphabet-section" style={{ width: '100%', marginTop: '0.5rem' }}>
-            <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
-                Chronological Archive
-              </span>
-              <div className="lang-toggle-container" style={{ 
-                display: 'flex', 
-                gap: '0.25rem', 
-                background: 'rgba(166, 124, 0, 0.05)', 
-                padding: '0.25rem', 
+            gap: '0.6rem',
+            overflowX: 'auto',
+            padding: '0.2rem 0.2rem 1.25rem 0.2rem',
+            scrollbarWidth: 'auto',
+            msOverflowStyle: 'auto',
+            width: '100%'
+          }}>
+            <button
+              onClick={() => setStartingLetter(null)}
+              className="alphabet-seal"
+              style={{
+                minWidth: '40px',
+                height: '40px',
                 borderRadius: '10px',
-                border: '1px solid rgba(166, 124, 0, 0.1)'
-              }}>
-                {(['en', 'ta'] as const).map(lang => (
-                  <button 
-                    key={lang}
-                    onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
-                    style={{
-                      background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent',
-                      color: alphabetLang === lang ? 'white' : 'var(--text-muted)',
-                      border: 'none',
-                      padding: '5px 14px',
-                      borderRadius: '8px',
-                      fontSize: '0.65rem',
-                      cursor: 'pointer',
-                      fontWeight: '800',
-                      textTransform: 'uppercase',
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    {lang === 'en' ? 'EN' : 'TA'}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="alphabet-scroller-compact" style={{ 
-              display: 'flex', 
-              gap: '0.6rem', 
-              overflowX: 'auto', 
-              padding: '0.2rem 0.2rem 1.25rem 0.2rem',
-              scrollbarWidth: 'auto',
-              msOverflowStyle: 'auto',
-              width: '100%'
-            }}>
+                border: startingLetter === null ? 'none' : '1.5px solid rgba(212, 175, 55, 0.1)',
+                background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)',
+                color: startingLetter === null ? 'white' : 'var(--text-dark)',
+                fontWeight: '800',
+                boxShadow: startingLetter === null ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
+                flexShrink: 0,
+                textTransform: 'uppercase',
+                fontSize: '0.7rem',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              All
+            </button>
+            {activeAlphabet.map(letter => (
               <button
-                onClick={() => setStartingLetter(null)}
+                key={letter}
+                onClick={() => setStartingLetter(letter)}
                 className="alphabet-seal"
                 style={{
                   minWidth: '40px',
                   height: '40px',
                   borderRadius: '10px',
-                  border: startingLetter === null ? 'none' : '1.5px solid rgba(212, 175, 55, 0.1)',
-                  background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)',
-                  color: startingLetter === null ? 'white' : 'var(--text-dark)',
+                  background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)',
+                  color: startingLetter === letter ? 'white' : 'var(--text-dark)',
                   fontWeight: '800',
-                  boxShadow: startingLetter === null ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
+                  fontSize: '0.9rem',
+                  boxShadow: startingLetter === letter ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
                   flexShrink: 0,
-                  textTransform: 'uppercase',
-                  fontSize: '0.7rem',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
+                  fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
                 }}
               >
-                All
+                {letter}
               </button>
-              {activeAlphabet.map(letter => (
-                <button
-                  key={letter}
-                  onClick={() => setStartingLetter(letter)}
-                  className="alphabet-seal"
-                  style={{
-                    minWidth: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
-                    background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)',
-                    color: startingLetter === letter ? 'white' : 'var(--text-dark)',
-                    fontWeight: '800',
-                    fontSize: '0.9rem',
-                    boxShadow: startingLetter === letter ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
-                    flexShrink: 0,
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
-                    fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
-                  }}
-                >
-                  {letter}
-                </button>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>

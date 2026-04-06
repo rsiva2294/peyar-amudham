@@ -91,13 +91,6 @@ function App() {
           onOpenContribute={() => setIsContributeOpen(true)}
         />
         
-        {/* Subtle Tagline */}
-        <div style={{ marginTop: '1rem', marginBottom: '2rem', textAlign: 'center' }}>
-          <p className="text-muted" style={{ fontStyle: 'italic', opacity: 0.7, fontSize: '0.9rem' }}>
-            A curated archive of 30k+ pure classical Tamil names.
-          </p>
-        </div>
-
         <SearchFilters 
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
