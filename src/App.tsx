@@ -65,6 +65,23 @@ function App() {
     }
   }, [searchQuery, searchType, searchPredicate, genderFilter, startingLetter, lengthFilter, showFavoritesOnly]);
 
+  // Handle Deep Linking (?name=EnglishName)
+  useEffect(() => {
+    if (names.length === 0) return;
+    
+    const params = new URLSearchParams(window.location.search);
+    const nameParam = params.get('name');
+    
+    if (nameParam) {
+      const decodedName = decodeURIComponent(nameParam);
+      const foundName = names.find(n => n.name_english.toLowerCase() === decodedName.toLowerCase());
+      if (foundName) {
+        setSharedName(foundName);
+        setIsShareOpen(true);
+      }
+    }
+  }, [names]);
+
   // 7. Handlers
   const handleMagicSearch = async (query: string) => {
     if (!query.trim()) return;

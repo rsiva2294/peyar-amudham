@@ -1,4 +1,4 @@
-
+import React, { useState } from 'react';
 import { Heart, Share2 } from 'lucide-react';
 import clsx from 'clsx';
 import type { BabyName } from './types';
@@ -12,9 +12,21 @@ interface NameCardProps {
 }
 
 export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFavorite, onShare, style }) => {
+  const [isTagsExpanded, setIsTagsExpanded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const isGirl = data.gender.toLowerCase() === 'girl';
   const tagColor = isGirl ? 'var(--girl-color)' : 'var(--boy-color)';
   const tagBg = isGirl ? 'var(--girl-bg)' : 'var(--boy-bg)';
+
+  const displayTags = (isDesktop || isTagsExpanded) ? data.tags : data.tags?.slice(0, 3);
+  const hasMoreTags = data.tags && data.tags.length > 3;
 
   return (
     <div className="name-card-container" style={{ ...style, padding: '0.75rem' }}>
@@ -76,7 +88,7 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
         </div>
 
         <div className="card-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '2rem' }}>
-          {data.tags?.slice(0, 3).map((tag, i) => (
+          {displayTags?.map((tag, i) => (
             <span key={i} className="heritage-tag" style={{
               background: 'rgba(212, 175, 55, 0.05)',
               color: 'var(--primary)',
@@ -89,10 +101,61 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
               {tag.toUpperCase()}
             </span>
           ))}
-          {data.tags && data.tags.length > 3 && (
-            <span className="tags-more" style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: '600', padding: '4px 0' }}>
-              +{data.tags.length - 3} MORE
-            </span>
+          {hasMoreTags && !isTagsExpanded && !isDesktop && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsTagsExpanded(true);
+              }}
+              className="tags-more-btn" 
+              style={{ 
+                background: 'rgba(212, 175, 55, 0.03)',
+                border: '1px dashed rgba(212, 175, 55, 0.2)',
+                color: 'var(--text-muted)', 
+                fontSize: '0.65rem', 
+                fontWeight: '800', 
+                padding: '4px 10px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.4)';
+                e.currentTarget.style.color = 'var(--primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(212, 175, 55, 0.03)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.2)';
+                e.currentTarget.style.color = 'var(--text-muted)';
+              }}
+            >
+              +{data.tags!.length - 3} MORE
+            </button>
+          )}
+          {isTagsExpanded && !isDesktop && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsTagsExpanded(false);
+              }}
+              style={{ 
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-muted)', 
+                fontSize: '0.7rem', 
+                fontWeight: '800', 
+                padding: '4px 0',
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                opacity: 0.6
+              }}
+            >
+              [ LESS ]
+            </button>
           )}
         </div>
       </div>

@@ -14,10 +14,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, name })
   if (!isOpen) return null;
 
   const shareText = `Discovering a piece of our heritage: "${name.name_tamil}" (${name.name_english}). Meaning: ${name.meaning_english}. Found on Peyar Amudham.`;
-  const shareUrl = window.location.href;
+  const shareUrl = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(name.name_english)}`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -64,6 +64,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, name })
           background: 'var(--card-bg)',
           borderRadius: '32px',
           overflow: 'hidden',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
           position: 'relative'
         }}
@@ -92,11 +95,12 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, name })
 
         {/* The Golden Card Visual */}
         <div className="golden-card-preview" style={{
-          padding: '3rem 2rem 2.5rem 2rem',
+          padding: 'clamp(2rem, 5vh, 4rem) 1.5rem 2.5rem 1.5rem',
           background: 'var(--gold-gradient)',
           position: 'relative',
           textAlign: 'center',
-          color: 'white'
+          color: 'white',
+          flexShrink: 0
         }}>
           {/* Heritage Seal Ornament */}
           <div style={{
@@ -124,14 +128,15 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, name })
             </span>
             
             <h2 className="tamil-text" style={{ 
-              fontSize: name.name_tamil.length > 12 ? '1.6rem' : name.name_tamil.length > 8 ? '2.1rem' : '3rem', 
-              marginBottom: '0.5rem',
+              fontSize: name.name_tamil.length > 12 
+                ? 'clamp(1.4rem, 6vw, 1.8rem)' 
+                : name.name_tamil.length > 8 
+                ? 'clamp(1.8rem, 8vw, 2.2rem)' 
+                : 'clamp(2.2rem, 10vw, 3.2rem)', 
+              marginBottom: '0.4rem',
               textShadow: '0 4px 12px rgba(0,0,0,0.2)',
-              lineHeight: '1.2',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              padding: '0 5px'
+              lineHeight: '1',
+              wordBreak: 'break-word'
             }}>
               {name.name_tamil}
             </h2>
@@ -170,7 +175,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, name })
         </div>
 
         {/* Share Actions */}
-        <div style={{ padding: '2rem' }}>
+        <div style={{ padding: 'clamp(1.5rem, 5vh, 2rem)', overflowY: 'auto' }}>
           <h3 style={{ 
             fontSize: '0.8rem', 
             fontWeight: '800', 

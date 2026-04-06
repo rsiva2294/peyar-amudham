@@ -25,10 +25,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 }) => {
   const [alphabetLang, setAlphabetLang] = useState<'en' | 'ta'>('en');
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
   useEffect(() => {
-    const isDesktop = window.innerWidth > 768;
-    if (isDesktop) setIsFiltersExpanded(true);
+    const handleResize = () => setIsDesktop(window.innerWidth > 768);
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const hasActiveFilters = lengthFilter !== 'All' || startingLetter !== null;
@@ -113,12 +116,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
       </div>
 
       {/* Main Row: Search + Gender + Length (Single Line on Desktop) */}
-      <div className="filter-group-row" style={{ 
+      {/* Primary Desktop Row: Search Box, Gender, Length */}
+      <div className="filter-group-row desktop-only" style={{ 
         display: 'flex', 
         gap: '1rem', 
         alignItems: 'flex-start', 
         width: '100%', 
-        flexWrap: 'wrap',
         marginBottom: '1.5rem'
       }}>
         {/* Search Input Area */}
@@ -250,7 +253,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           )}
         </div>
 
-        {/* Gender Toggle */}
+        {/* Gender Toggle (Desktop Version) */}
         <div className="gender-toggle" style={{
           flex: 1,
           minWidth: '220px',
@@ -287,44 +290,96 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           ))}
         </div>
 
-        {/* Length Toggle */}
-        <div className={`collapsible-filters ${isFiltersExpanded ? 'expanded' : ''}`} style={{ flex: 1.5, minWidth: '320px', display: 'flex' }}>
-          <div className="length-toggle" style={{
-            display: 'flex',
-            gap: '0.25rem',
-            background: 'var(--card-bg)',
-            padding: '6px',
-            borderRadius: '16px',
-            boxShadow: 'var(--card-shadow)',
-            border: '1.5px solid rgba(166, 124, 0, 0.05)',
-            width: '100%',
-            alignItems: 'center'
-          }}>
-            {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
-              <button
-                key={len}
-                onClick={() => setLengthFilter(len)}
-                style={{
-                  flex: 1,
-                  padding: '8px 10px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
-                  color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
-                  fontWeight: '800',
-                  fontSize: '0.8rem',
-                  textTransform: 'uppercase',
-                  transition: 'all 0.2s'
-                }}
-              >
-                {len}
-              </button>
-            ))}
-          </div>
+        {/* Length Toggle (Desktop Version) */}
+        <div className="length-toggle" style={{
+          flex: 1.5,
+          minWidth: '320px',
+          display: 'flex',
+          gap: '0.25rem',
+          background: 'var(--card-bg)',
+          padding: '6px',
+          borderRadius: '16px',
+          boxShadow: 'var(--card-shadow)',
+          border: '1.5px solid rgba(166, 124, 0, 0.05)',
+          alignItems: 'center'
+        }}>
+          {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
+            <button
+              key={len}
+              onClick={() => setLengthFilter(len)}
+              style={{
+                flex: 1,
+                padding: '8px 10px',
+                borderRadius: '10px',
+                border: 'none',
+                background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent',
+                color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)',
+                fontWeight: '800',
+                fontSize: '0.8rem',
+                textTransform: 'uppercase',
+                transition: 'all 0.2s'
+              }}
+            >
+              {len}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Mobile Filter Toggle */}
+      {/* Mobile Primary Section: Search Box (only) */}
+      <div className="filter-group-row-primary mobile-only" style={{ 
+        display: 'flex', 
+        gap: '1rem', 
+        alignItems: 'center', 
+        width: '100%', 
+        marginBottom: '1rem'
+      }}>
+        {/* Search Input Area (Mobile version is same as desktop input, but alone) */}
+        <div className="search-input-box magic-box" style={{
+          flex: 1,
+          background: 'var(--card-bg)',
+          borderRadius: '16px',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '10px 16px',
+          boxShadow: 'var(--card-shadow)',
+          border: '1px solid var(--primary)'
+        }}>
+          {searchType === 'magic' ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
+              <textarea
+                placeholder="Describe the vibe..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                rows={1}
+                className="tamil-text"
+                style={{ border: 'none', outline: 'none', flex: 1, fontSize: '1.05rem', background: 'transparent', resize: 'none' }}
+              />
+              <button
+                onClick={() => onMagicSearch?.(searchQuery)}
+                disabled={isGenerating || !searchQuery.trim()}
+                style={{ background: 'var(--gold-gradient)', color: 'white', padding: '0.45rem 1.25rem', borderRadius: '10px', border: 'none', fontWeight: '800', fontSize: '0.75rem' }}
+              >
+                {isGenerating ? '...' : 'MAGIC'}
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Search size={20} color="var(--primary)" style={{ marginRight: '1rem' }} />
+              <input
+                type="text"
+                placeholder={searchType === 'name' ? "Enter name" : "Search theme"}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="tamil-text"
+                style={{ border: 'none', outline: 'none', width: '100%', fontSize: '1.05rem', background: 'transparent' }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile-Only Refine Toggle */}
       <button
         className="refine-toggle mobile-only"
         onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
@@ -333,16 +388,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          padding: '1rem 1.25rem',
+          padding: '0.85rem 1.25rem',
           background: 'var(--card-bg)',
           borderRadius: '16px',
           border: '1.5px solid rgba(166, 124, 0, 0.1)',
-          boxShadow: 'var(--card-shadow)',
           color: 'var(--primary)',
           fontWeight: '800',
           fontSize: '0.85rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
           marginBottom: '1rem'
         }}
       >
@@ -350,110 +402,56 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           <Filter size={18} />
           <span>Refine Archives</span>
           {hasActiveFilters && (
-            <span style={{
-              width: '8px',
-              height: '8px',
-              background: 'var(--primary)',
-              borderRadius: '50%',
-              boxShadow: '0 0 8px var(--primary)'
-            }}></span>
+            <span style={{ width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%' }}></span>
           )}
         </div>
         {isFiltersExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </button>
 
-      {/* Alphabet Block */}
-      <div className={`collapsible-filters-alphabet ${isFiltersExpanded ? 'expanded' : ''}`} style={{ width: '100%' }}>
-        <div className="alphabet-section" style={{ width: '100%', marginTop: '0.5rem' }}>
+      {/* Collapsible Refinement Drawer (Mobile Only Logic) */}
+      <div className={`collapsible-filters mobile-only ${isFiltersExpanded ? 'expanded' : ''}`} style={{ 
+        width: '100%',
+        overflow: 'hidden',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+      }}>
+        <div className="refinement-drawer-content" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', paddingBottom: '1rem' }}>
+          {/* Gender & Length in Drawer */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+             {/* Copy existing Gender/Length buttons logic here if needed, but they are already visible on desktop above */}
+             {/* To keep code clean, I'll repeat them for the drawer version */}
+             <div className="gender-toggle" style={{ display: 'flex', gap: '0.35rem', background: 'var(--card-bg)', padding: '6px', borderRadius: '16px', border: '1.5px solid rgba(166, 124, 0, 0.05)' }}>
+                {(['All', 'Boy', 'Girl'] as const).map(gender => (
+                  <button key={gender} onClick={() => setGenderFilter(gender)} style={{ flex: 1, padding: '8px', borderRadius: '12px', border: 'none', background: genderFilter === gender ? 'var(--gold-gradient)' : 'transparent', color: genderFilter === gender ? 'white' : 'var(--text-muted)', fontWeight: '800', fontSize: '0.75rem' }}>{gender}</button>
+                ))}
+             </div>
+             <div className="length-toggle" style={{ display: 'flex', gap: '0.25rem', background: 'var(--card-bg)', padding: '6px', borderRadius: '16px', border: '1.5px solid rgba(166, 124, 0, 0.05)' }}>
+                {(['All', 'Short', 'Medium', 'Long'] as const).map(len => (
+                  <button key={len} onClick={() => setLengthFilter(len)} style={{ flex: 1, padding: '8px', borderRadius: '10px', border: 'none', background: lengthFilter === len ? 'rgba(166, 124, 0, 0.08)' : 'transparent', color: lengthFilter === len ? 'var(--primary)' : 'var(--text-muted)', fontWeight: '800', fontSize: '0.8rem' }}>{len}</button>
+                ))}
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Alphabet Block (Visible on Desktop always, controlled by Drawer on mobile) */}
+      <div className={`alphabet-section ${!isDesktop && !isFiltersExpanded ? 'hide-mobile' : ''}`} style={{ width: '100%', marginTop: '0.5rem' }}>
           <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
               Chronological Archive
             </span>
-            <div className="lang-toggle-container" style={{
-              display: 'flex',
-              gap: '0.25rem',
-              background: 'rgba(166, 124, 0, 0.05)',
-              padding: '0.25rem',
-              borderRadius: '10px',
-              border: '1px solid rgba(166, 124, 0, 0.1)'
-            }}>
+            <div className="lang-toggle-container" style={{ display: 'flex', gap: '0.25rem', background: 'rgba(166, 124, 0, 0.05)', padding: '0.25rem', borderRadius: '10px', border: '1px solid rgba(166, 124, 0, 0.1)' }}>
               {(['en', 'ta'] as const).map(lang => (
-                <button
-                  key={lang}
-                  onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
-                  style={{
-                    background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent',
-                    color: alphabetLang === lang ? 'white' : 'var(--text-muted)',
-                    border: 'none',
-                    padding: '5px 14px',
-                    borderRadius: '8px',
-                    fontSize: '0.65rem',
-                    cursor: 'pointer',
-                    fontWeight: '800',
-                    textTransform: 'uppercase',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  {lang === 'en' ? 'EN' : 'TA'}
-                </button>
+                <button key={lang} onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }} style={{ background: alphabetLang === lang ? 'var(--gold-gradient)' : 'transparent', color: alphabetLang === lang ? 'white' : 'var(--text-muted)', border: 'none', padding: '5px 14px', borderRadius: '8px', fontSize: '0.65rem', cursor: 'pointer', fontWeight: '800', textTransform: 'uppercase' }}>{lang === 'en' ? 'EN' : 'TA'}</button>
               ))}
             </div>
           </div>
 
-          <div className="alphabet-scroller-compact" style={{
-            display: 'flex',
-            gap: '0.6rem',
-            overflowX: 'auto',
-            padding: '0.2rem 0.2rem 1.25rem 0.2rem',
-            scrollbarWidth: 'auto',
-            msOverflowStyle: 'auto',
-            width: '100%'
-          }}>
-            <button
-              onClick={() => setStartingLetter(null)}
-              className="alphabet-seal"
-              style={{
-                minWidth: '40px',
-                height: '40px',
-                borderRadius: '10px',
-                border: startingLetter === null ? 'none' : '1.5px solid rgba(212, 175, 55, 0.1)',
-                background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)',
-                color: startingLetter === null ? 'white' : 'var(--text-dark)',
-                fontWeight: '800',
-                boxShadow: startingLetter === null ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
-                flexShrink: 0,
-                textTransform: 'uppercase',
-                fontSize: '0.7rem',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              All
-            </button>
+          <div className="alphabet-scroller-compact" style={{ display: 'flex', gap: '0.6rem', overflowX: 'auto', padding: '0.2rem 0.2rem 1.25rem 0.2rem', width: '100%' }}>
+            <button onClick={() => setStartingLetter(null)} className="alphabet-seal" style={{ minWidth: '40px', height: '40px', borderRadius: '10px', background: startingLetter === null ? 'var(--gold-gradient)' : 'var(--card-bg)', color: startingLetter === null ? 'white' : 'var(--text-dark)', fontWeight: '800', fontSize: '0.7rem', transition: 'all 0.3s ease' }}>All</button>
             {activeAlphabet.map(letter => (
-              <button
-                key={letter}
-                onClick={() => setStartingLetter(letter)}
-                className="alphabet-seal"
-                style={{
-                  minWidth: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)',
-                  color: startingLetter === letter ? 'white' : 'var(--text-dark)',
-                  fontWeight: '800',
-                  fontSize: '0.9rem',
-                  boxShadow: startingLetter === letter ? '0 6px 16px rgba(184, 134, 11, 0.3)' : 'var(--card-shadow)',
-                  flexShrink: 0,
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
-                  fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
-                }}
-              >
-                {letter}
-              </button>
+              <button key={letter} onClick={() => setStartingLetter(letter)} className="alphabet-seal" style={{ minWidth: '40px', height: '40px', borderRadius: '10px', background: startingLetter === letter ? 'var(--gold-gradient)' : 'var(--card-bg)', color: startingLetter === letter ? 'white' : 'var(--text-dark)', fontWeight: '800', fontSize: '0.9rem', flexShrink: 0, border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)' }}>{letter}</button>
             ))}
           </div>
-        </div>
       </div>
     </div>
   );
