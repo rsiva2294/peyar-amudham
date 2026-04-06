@@ -493,3 +493,26 @@ button {
     border-radius: 24px !important;
   }
 }
+
+/* --- Responsive Layout Utilities --- */
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .refine-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .hide-mobile {
+    display: none !important;
+  }
+}

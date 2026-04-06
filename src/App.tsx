@@ -286,6 +286,7 @@ function App() {
           name={surpriseName}
           isFavorite={favorites.has(surpriseName.id)}
           onToggleFavorite={toggleFavorite}
+          onShare={handleShare}
         />
       )}
 
