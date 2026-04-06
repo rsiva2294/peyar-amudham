@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemaps for 31,000+ pure Tamil names
+Sitemap: https://peyar-amudham.web.app/sitemap.xml

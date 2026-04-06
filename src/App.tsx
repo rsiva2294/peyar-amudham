@@ -5,18 +5,15 @@ import { NameCard } from './NameCard';
 import { SurpriseModal } from './SurpriseModal';
 import { ContributeModal } from './ContributeModal';
 import { ShareModal } from './ShareModal';
-import { useNamesData } from './hooks/useNamesData';
+import { SEO } from './components/SEO';
 import { useFavorites } from './hooks/useFavorites';
-import { useNameFilters } from './hooks/useNameFilters';
+import { useNamesManager } from './hooks/useNamesManager';
 import { fetchMagicKeywords } from './services/gemini';
 import type { BabyName } from './types';
 
 function App() {
-  // 1. Core Data & Persistence
-  const { names, loading } = useNamesData();
+  // 1. Core State
   const { favorites, toggleFavorite } = useFavorites();
-
-  // 2. Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState<'name' | 'tag' | 'magic'>('name');
   const [searchPredicate, setSearchPredicate] = useState<'starts' | 'contains' | 'ends'>('starts');
@@ -25,7 +22,6 @@ function App() {
   const [startingLetter, setStartingLetter] = useState<string | null>(null);
   const [lengthFilter, setLengthFilter] = useState<'All' | 'Short' | 'Medium' | 'Long'>('All');
   
-  // 3. AI, Surprise & Contribute State
   const [aiKeywords, setAiKeywords] = useState<string[]>([]);
   const [aiTamilRoots, setAiTamilRoots] = useState<string[]>([]);
   const [aiNote, setAiNote] = useState<string | null>(null);
@@ -35,13 +31,11 @@ function App() {
   const [isContributeOpen, setIsContributeOpen] = useState(false);
   const [sharedName, setSharedName] = useState<BabyName | null>(null);
   const [isShareOpen, setIsShareOpen] = useState(false);
-
-  // 4. Pagination
   const [page, setPage] = useState(1);
   const itemsPerPage = 24;
 
-  // 5. Filtering Logic (Extracted Hook)
-  const filteredNames = useNameFilters(names, {
+  // 2. High Performance Filter Management (Web Worker backed)
+  const { filteredNames, loading } = useNamesManager({
     searchQuery,
     searchType,
     searchPredicate,
@@ -54,10 +48,9 @@ function App() {
     favorites
   });
 
-  // 6. Effects
+  // 3. Effects
   useEffect(() => {
     setPage(1);
-    // Reset AI results if switching away from magic search or query cleared
     if (searchType !== 'magic' || !searchQuery.trim()) {
       setAiKeywords([]);
       setAiTamilRoots([]);
@@ -67,20 +60,20 @@ function App() {
 
   // Handle Deep Linking (?name=EnglishName)
   useEffect(() => {
-    if (names.length === 0) return;
+    if (loading || filteredNames.length === 0) return;
     
     const params = new URLSearchParams(window.location.search);
     const nameParam = params.get('name');
     
     if (nameParam) {
       const decodedName = decodeURIComponent(nameParam);
-      const foundName = names.find(n => n.name_english.toLowerCase() === decodedName.toLowerCase());
+      const foundName = filteredNames.find((n: BabyName) => n.name_english.toLowerCase() === decodedName.toLowerCase());
       if (foundName) {
         setSharedName(foundName);
         setIsShareOpen(true);
       }
     }
-  }, [names]);
+  }, [loading, filteredNames]);
 
   // 7. Handlers
   const handleMagicSearch = async (query: string) => {
@@ -117,6 +110,7 @@ function App() {
 
   return (
     <div style={{ paddingBottom: '4rem', background: 'var(--bg-color)', minHeight: '100vh' }}>
+      <SEO name={sharedName} />
       <div className="container">
         <Header 
           showFavoritesOnly={showFavoritesOnly} 
@@ -203,7 +197,7 @@ function App() {
             gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', 
             gap: '1rem' 
           }}>
-            {paginatedNames.map(name => (
+            {paginatedNames.map((name: BabyName) => (
               <NameCard 
                 key={name.id}
                 data={name} 

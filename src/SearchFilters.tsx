@@ -43,13 +43,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   return (
     <div className="search-filters-container" style={{ marginBottom: '2.5rem' }}>
       {/* Top Row: Search Type & Surprise Button */}
-      <div className="filter-row top-row" style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '1.25rem', 
-        flexWrap: 'wrap', 
-        gap: '1rem' 
+      <div className="filter-row top-row" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.25rem',
+        flexWrap: 'wrap',
+        gap: '1rem'
       }}>
         <div
           className="heritage-box search-type-toggle"
@@ -84,7 +84,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
-              {type === 'magic' ? '✨ Magic' : type === 'name' ? 'Name' : 'Terms'}
+              {type === 'magic' ? '✨ Vibe' : type === 'name' ? 'Name' : 'Terms'}
             </button>
           ))}
         </div>
@@ -117,17 +117,17 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 
       {/* Main Row: Search + Gender + Length (Single Line on Desktop) */}
       {/* Unified Search Row: Always Visible */}
-      <div className="search-primary-container" style={{ 
-        display: 'flex', 
-        gap: '1rem', 
-        alignItems: 'flex-start', 
-        width: '100%', 
+      <div className="search-primary-container" style={{
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'flex-start',
+        width: '100%',
         flexWrap: 'wrap',
         marginBottom: '1.5rem'
       }}>
         {/* Search Input Area */}
         <div className="search-input-box magic-box" style={{
-          flex: isDesktop ? 3 : '1 1 100%',
+          flex: '1 1 100%',
           height: 'auto',
           background: 'var(--card-bg)',
           borderRadius: '16px',
@@ -183,7 +183,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                     cursor: isGenerating || !searchQuery.trim() ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {isGenerating ? (isDesktop ? 'Consulting Archives...' : '...') : 'MAGIC'}
+                  {isGenerating ? (isDesktop ? 'Consulting Archives...' : '...') : 'DISCOVER'}
                 </button>
               </div>
             </div>
@@ -293,7 +293,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         {/* Filters Group: Gender & Length (Row on Desktop, Hidden on Mobile unless drawer open) */}
         <div className={`filter-options-group ${!isDesktop && !isFiltersExpanded ? 'hide-mobile' : ''}`} style={{
           display: 'flex',
-          flex: isDesktop ? 2 : '1 1 100%',
+          flex: '1 1 100%',
           gap: '1rem',
           flexWrap: 'wrap'
         }}>
