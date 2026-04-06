@@ -16,14 +16,14 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
   const tagBg = isGirl ? 'var(--girl-bg)' : 'var(--boy-bg)';
 
   return (
-    <div style={{ ...style, padding: '0.75rem' }}>
+    <div className="name-card-container" style={{ ...style, padding: '0.75rem' }}>
       <div className="artifact-card" style={{ height: '100%', padding: '1.75rem', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h2 className="tamil-text text-2xl" style={{ marginBottom: '0.4rem', color: 'var(--text-dark)', lineHeight: '1.2' }}>
               {data.name_tamil}
             </h2>
-            <p className="text-sm font-bold" style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <p className="text-sm font-bold latin-name" style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {data.name_english}
             </p>
           </div>
@@ -36,8 +36,8 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
           </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.25rem', marginBottom: '1.5rem' }}>
-          <span style={{
+        <div className="card-chips" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.25rem', marginBottom: '1.5rem' }}>
+          <span className="gender-chip" style={{
             background: tagBg,
             color: tagColor,
             padding: '6px 14px',
@@ -50,24 +50,24 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
           }}>
             {data.gender}
           </span>
-          <span style={{ color: 'var(--text-muted)', opacity: 0.4 }}>|</span>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span className="chip-sep" style={{ color: 'var(--text-muted)', opacity: 0.4 }}>|</span>
+          <span className="length-chip" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {data.length} letters
           </span>
         </div>
 
-        <div style={{ flex: 1 }}>
-          <p className="tamil-text text-md" style={{ color: 'var(--text-dark)', marginBottom: '0.75rem', opacity: 0.9, fontWeight: '500' }}>
+        <div className="card-content" style={{ flex: 1 }}>
+          <p className="tamil-text text-md meaning-ta" style={{ color: 'var(--text-dark)', marginBottom: '0.75rem', opacity: 0.9, fontWeight: '500' }}>
             {data.meaning_tamil}
           </p>
-          <p className="text-sm" style={{ color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: '1.6', fontWeight: '500' }}>
+          <p className="text-sm meaning-en" style={{ color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: '1.6', fontWeight: '500' }}>
             "{data.meaning_english}"
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '2rem' }}>
+        <div className="card-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '2rem' }}>
           {data.tags?.slice(0, 3).map((tag, i) => (
-            <span key={i} style={{
+            <span key={i} className="heritage-tag" style={{
               background: 'rgba(212, 175, 55, 0.05)',
               color: 'var(--primary)',
               padding: '4px 12px',
@@ -80,7 +80,7 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
             </span>
           ))}
           {data.tags && data.tags.length > 3 && (
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: '600', padding: '4px 0' }}>
+            <span className="tags-more" style={{ color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: '600', padding: '4px 0' }}>
               +{data.tags.length - 3} MORE
             </span>
           )}

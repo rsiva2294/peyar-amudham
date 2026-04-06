@@ -28,24 +28,28 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   const activeAlphabet = alphabetLang === 'en' ? ENGLISH_ALPHABET : TAMIL_ALPHABET;
 
   return (
-    <div style={{ marginBottom: '2.5rem' }}>
+    <div className="search-filters-container" style={{ marginBottom: '2.5rem' }}>
       {/* Search Type & Actions */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{
-          display: 'flex',
-          gap: '0.35rem',
-          background: 'rgba(212, 175, 55, 0.05)',
-          padding: '0.35rem',
-          borderRadius: '20px',
-          border: '1.5px solid rgba(212, 175, 55, 0.1)'
-        }}>
+      <div className="filter-row top-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div 
+          className="heritage-box search-type-toggle"
+          style={{ 
+            display: 'flex', 
+            gap: '0.35rem', 
+            background: 'rgba(212, 175, 55, 0.05)', 
+            padding: '0.35rem', 
+            borderRadius: '20px',
+            border: '1.5px solid rgba(212, 175, 55, 0.1)' 
+          }}
+        >
           {(['name', 'tag', 'magic'] as const).map(type => (
-            <button
+            <button 
               key={type}
               onClick={() => {
                 setSearchType(type);
                 setSearchQuery('');
               }}
+              className={`filter-btn ${searchType === type ? 'active' : ''}`}
               style={{
                 padding: '0.5rem 1.25rem',
                 borderRadius: '16px',
@@ -64,9 +68,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             </button>
           ))}
         </div>
-
-        <button
+        
+        <button 
           onClick={onSurpriseMe}
+          className="surprise-btn"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -84,24 +89,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             fontFamily: 'var(--font-en)'
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.3), 0 8px 15px rgba(133, 101, 0, 0.15)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(133, 101, 0, 0.1)';
-          }}
         >
           <Sparkles size={18} />
-          Surprise Me
+          <span className="btn-text">Surprise Me</span>
         </button>
       </div>
 
-      <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'flex-start' }}>
+      <div className="filter-row main-filters" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'flex-start' }}>
         {/* Search Input Area */}
-        <div style={{
-          flex: '1',
+        <div className="search-input-box" style={{ 
+          flex: '1', 
           minWidth: '280px',
           background: 'var(--card-bg)',
           borderRadius: '16px',
@@ -114,7 +111,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         }}>
           {searchType === 'magic' ? (
             <div style={{ padding: '0.75rem 1rem' }}>
-              <textarea
+              <textarea 
                 placeholder="Describe the vibe... (e.g. 'A beautiful flower that blooms at night')"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -133,7 +130,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 }}
               />
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                <button
+                <button 
                   onClick={() => onMagicSearch?.(searchQuery)}
                   disabled={isGenerating || !searchQuery.trim()}
                   style={{
@@ -157,8 +154,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
               <Search size={20} color="var(--primary)" style={{ marginRight: '1rem', opacity: 0.8 }} />
-              <input
-                type="text"
+              <input 
+                type="text" 
                 placeholder={searchType === 'name' ? "Enter pure name (e.g. 'அழகன்')" : "Search by theme (e.g. 'nature')"}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -178,8 +175,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         </div>
 
         {/* Gender Filters */}
-        <div style={{
-          display: 'flex',
+        <div className="gender-toggle" style={{ 
+          display: 'flex', 
           gap: '0.35rem',
           background: 'var(--card-bg)',
           padding: '0.35rem',
@@ -195,7 +192,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 padding: '0.65rem 1.25rem',
                 borderRadius: '12px',
                 border: 'none',
-                background: genderFilter === gender
+                background: genderFilter === gender 
                   ? (gender === 'Girl' ? 'var(--ruby-gradient)' : gender === 'Boy' ? 'var(--sapphire-gradient)' : 'var(--gold-gradient)')
                   : 'transparent',
                 color: genderFilter === gender ? 'white' : 'var(--text-muted)',
@@ -212,14 +209,14 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             </button>
           ))}
         </div>
-
+        
         {/* Length Filters */}
-        <div style={{
-          display: 'flex',
-          gap: '0.25rem',
-          background: 'var(--card-bg)',
-          padding: '0.35rem',
-          borderRadius: '16px',
+        <div className="length-toggle" style={{ 
+          display: 'flex', 
+          gap: '0.25rem', 
+          background: 'var(--card-bg)', 
+          padding: '0.35rem', 
+          borderRadius: '16px', 
           boxShadow: 'var(--card-shadow)',
           border: '1.5px solid rgba(166, 124, 0, 0.05)'
         }}>
@@ -247,21 +244,21 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
       </div>
 
       {/* Alphabet Scroller */}
-      <div style={{ marginTop: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <span className="text-sm font-bold" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
+      <div className="alphabet-section" style={{ marginTop: '1.5rem' }}>
+        <div className="scroller-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <span className="text-sm font-bold scroller-label" style={{ color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
             Chronological Archive
           </span>
-          <div style={{
-            display: 'flex',
-            gap: '0.25rem',
-            background: 'rgba(166, 124, 0, 0.05)',
-            padding: '0.25rem',
+          <div className="lang-toggle-container" style={{ 
+            display: 'flex', 
+            gap: '0.25rem', 
+            background: 'rgba(166, 124, 0, 0.05)', 
+            padding: '0.25rem', 
             borderRadius: '10px',
             border: '1px solid rgba(166, 124, 0, 0.1)'
           }}>
             {(['en', 'ta'] as const).map(lang => (
-              <button
+              <button 
                 key={lang}
                 onClick={() => { setAlphabetLang(lang); setStartingLetter(null); }}
                 style={{
@@ -282,17 +279,18 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             ))}
           </div>
         </div>
-
-        <div style={{
-          display: 'flex',
-          gap: '0.75rem',
-          overflowX: 'auto',
+        
+        <div className="alphabet-scroller-compact" style={{ 
+          display: 'flex', 
+          gap: '0.75rem', 
+          overflowX: 'auto', 
           padding: '0.6rem 0.2rem 1.2rem 0.2rem',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none'
         }}>
           <button
             onClick={() => setStartingLetter(null)}
+            className="alphabet-seal"
             style={{
               minWidth: '46px',
               height: '46px',
@@ -314,6 +312,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             <button
               key={letter}
               onClick={() => setStartingLetter(letter)}
+              className="alphabet-seal"
               style={{
                 minWidth: '46px',
                 height: '46px',
@@ -327,12 +326,6 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 border: startingLetter === letter ? 'none' : '1.5px solid rgba(212, 175, 55, 0.05)',
                 fontFamily: alphabetLang === 'ta' ? 'var(--font-ta)' : 'var(--font-en)'
-              }}
-              onMouseEnter={(e) => {
-                if (startingLetter !== letter) {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.borderColor = 'var(--primary)';
-                }
               }}
               onMouseLeave={(e) => {
                 if (startingLetter !== letter) {
