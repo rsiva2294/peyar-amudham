@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Share2, Copy, Check, MessageCircle, Download } from 'lucide-react';
+import { X, Share2, Copy, Check, MessageCircle } from 'lucide-react';
 import type { BabyName } from './types';
 
 interface ShareModalProps {
