@@ -102,18 +102,13 @@ The name data is stored in `public/data/names.json`. The application uses a high
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you'd like to improve the code or the dataset:
-1. Fork the Project.
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the Branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+Contributions are welcome! If you'd like to improve the code or the dataset, please read our **[Contributing Guide](CONTRIBUTING.md)** and our **[Code of Conduct](CODE_OF_CONDUCT.md)** for more information.
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the **MIT License**. See **[LICENSE](LICENSE)** for more information.
 
 ---
 

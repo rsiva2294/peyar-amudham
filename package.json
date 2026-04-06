@@ -1,7 +1,17 @@
 {
   "name": "peyar-amudham",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "description": "A premium, high-performance digital archive of 31,000+ pure classical Tamil names.",
+  "author": "Sivakaminathan Muthusamy <hello@sivakaminathan.in>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rsiva2294/peyar-amudham.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rsiva2294/peyar-amudham/issues"
+  },
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
