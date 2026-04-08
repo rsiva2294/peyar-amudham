@@ -85,9 +85,10 @@ function App() {
       setAiTamilRoots(response.tamilRoots);
       setAiNote(response.culturalNote);
       setPage(1);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Magic Search Error:", error);
-      alert(error.message || 'Failed to generate results.');
+      const message = error instanceof Error ? error.message : 'Failed to generate results.';
+      alert(message);
     } finally {
       setIsGenerating(false);
     }
@@ -250,15 +251,15 @@ function App() {
         padding: '5rem 1.5rem',
         background: 'rgba(166, 124, 0, 0.02)'
       }}>
-        <div style={{ marginBottom: '1.5rem', fontWeight: '800', letterSpacing: '0.15em', opacity: 0.6, fontSize: '0.85rem' }}>
-          ஆராய்க (EXPLORE) • 30k+ தொல்பொருட்கள் (ARTIFACTS) • மரபு வழி (TRADITION FIRST)
+        <div style={{ marginBottom: '1rem', fontWeight: '800', letterSpacing: '0.15em', opacity: 0.7, fontSize: '0.85rem' }}>
+          ஆராய்க (EXPLORE) • 31k+ தொல்பொருட்கள் (ARTIFACTS)
         </div>
-        <p style={{ maxWidth: '700px', margin: '0.5rem auto', lineHeight: '1.8', fontWeight: '500' }}>
-          Our dataset is professionally curated and cross-verified with the official **Tamil Virtual Academy (TVA)** public archives. 
-          Each entry has been meticulously translated, tagged, and digitized to provide a contemporary discovery experience for pure Tamil heritage.
+        <p style={{ maxWidth: '600px', margin: '0 auto 1.25rem', lineHeight: '1.6', fontWeight: '500' }}>
+          Heritage archives cross-verified with the **Tamil Virtual Academy (TVA)**. 
+          Digitally preserved for the pure Tamil community.
         </p>
-        <p style={{ maxWidth: '650px', margin: '1.5rem auto', fontSize: '0.75rem', opacity: 0.5, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: '1.6' }}>
-          Peyar Amudham is an independent cultural initiative. This project is dedicated to language preservation and is not officially affiliated with the Government of Tamil Nadu.
+        <p style={{ fontSize: '0.7rem', opacity: 0.4, fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Independent initiative • Not affiliated with the Govt. of Tamil Nadu
         </p>
         <p style={{ marginTop: '2.5rem', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.15em', opacity: 0.8, textTransform: 'uppercase' }}>
           Developed by <a href="https://in.linkedin.com/in/sivakaminathan-muthusamy" target="_blank" rel="noopener noreferrer" style={{ 

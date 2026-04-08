@@ -65,24 +65,37 @@ export function useNamesManager(options: FilterOptions) {
     type: options.searchType
   });
 
+  const {
+    searchQuery,
+    searchType,
+    searchPredicate,
+    genderFilter,
+    startingLetter,
+    lengthFilter,
+    aiKeywords,
+    aiTamilRoots,
+    showFavoritesOnly,
+    favorites
+  } = options;
+
   useEffect(() => {
     if (!workerRef.current) return;
 
     // Detect what changed
-    const aiKeywordsChanged = JSON.stringify(options.aiKeywords) !== prevAiState.current.keywords;
-    const aiTamilRootsChanged = JSON.stringify(options.aiTamilRoots) !== prevAiState.current.roots;
-    const typeChanged = options.searchType !== prevAiState.current.type;
+    const aiKeywordsChanged = JSON.stringify(aiKeywords) !== prevAiState.current.keywords;
+    const aiTamilRootsChanged = JSON.stringify(aiTamilRoots) !== prevAiState.current.roots;
+    const typeChanged = searchType !== prevAiState.current.type;
 
     // If we're in magic mode and only the query changed, skip everything
-    if (options.searchType === 'magic' && !aiKeywordsChanged && !aiTamilRootsChanged && !typeChanged) {
+    if (searchType === 'magic' && !aiKeywordsChanged && !aiTamilRootsChanged && !typeChanged) {
       return;
     }
 
     // Update refs for next run
     prevAiState.current = {
-      keywords: JSON.stringify(options.aiKeywords),
-      roots: JSON.stringify(options.aiTamilRoots),
-      type: options.searchType
+      keywords: JSON.stringify(aiKeywords),
+      roots: JSON.stringify(aiTamilRoots),
+      type: searchType
     };
 
     if (debounceTimer.current) {
@@ -91,13 +104,20 @@ export function useNamesManager(options: FilterOptions) {
 
     // Identify if any options that should trigger a filter have changed
     const triggerOptions = {
-      ...options,
-      // In magic mode, we filter strictly on the AI results
-      searchQuery: options.searchType === 'magic' ? '' : options.searchQuery
+      searchQuery: searchType === 'magic' ? '' : searchQuery,
+      searchType,
+      searchPredicate,
+      genderFilter,
+      startingLetter,
+      lengthFilter,
+      aiKeywords,
+      aiTamilRoots,
+      showFavoritesOnly,
+      favorites
     };
 
     // Immediately show loading for magic search, debounce others
-    const delay = (options.searchType === 'name' || options.searchType === 'tag') ? 300 : 0;
+    const delay = (searchType === 'name' || searchType === 'tag') ? 300 : 0;
 
     debounceTimer.current = window.setTimeout(() => {
       setLoading(true);
@@ -105,7 +125,7 @@ export function useNamesManager(options: FilterOptions) {
         type: 'FILTER',
         payload: {
           ...triggerOptions,
-          favorites: Array.from(options.favorites)
+          favorites: Array.from(favorites)
         }
       });
     }, delay);
@@ -114,16 +134,16 @@ export function useNamesManager(options: FilterOptions) {
       if (debounceTimer.current) window.clearTimeout(debounceTimer.current);
     };
   }, [
-    options.searchQuery,
-    options.searchType,
-    options.searchPredicate,
-    options.genderFilter,
-    options.startingLetter,
-    options.lengthFilter,
-    options.aiKeywords,
-    options.aiTamilRoots,
-    options.showFavoritesOnly,
-    options.favorites
+    searchQuery,
+    searchType,
+    searchPredicate,
+    genderFilter,
+    startingLetter,
+    lengthFilter,
+    aiKeywords,
+    aiTamilRoots,
+    showFavoritesOnly,
+    favorites
   ]);
 
   return { filteredNames, loading, totalCount };

@@ -1,0 +1,25 @@
+
+> peyar-amudham@1.0.0 lint
+> eslint .
+
+
+C:\Users\rsiva\Desktop\tamil-baby-names\src\App.tsx
+  88:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rsiva\Desktop\tamil-baby-names\src\hooks\useNamesManager.ts
+  116:6  warning  React Hook useEffect has a missing dependency: 'options'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\rsiva\Desktop\tamil-baby-names\src\services\gemini.ts
+  43:12  error  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\rsiva\Desktop\tamil-baby-names\src\test\setup.ts
+   6:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rsiva\Desktop\tamil-baby-names\src\workers\names.worker.ts
+   81:12  error  'error' is defined but never used             @typescript-eslint/no-unused-vars
+  189:7   error  Unexpected lexical declaration in case block  no-case-declarations
+  212:7   error  Unexpected lexical declaration in case block  no-case-declarations
+
+Γ£û 8 problems (7 errors, 1 warning)
+

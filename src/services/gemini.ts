@@ -40,7 +40,7 @@ export async function fetchMagicKeywords(query: string): Promise<MagicResponse> 
       tamilRoots: (parsed.tamilRoots || []).map((r: string) => r.trim()),
       culturalNote: parsed.culturalNote || ""
     };
-  } catch (e) {
+  } catch {
     console.error("Failed to parse Gemini JSON:", text);
     return { keywords: [query], tamilRoots: [], culturalNote: "" };
   }

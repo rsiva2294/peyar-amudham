@@ -78,7 +78,7 @@ async function fetchAndCacheNames() {
     }
     
     self.postMessage({ type: 'DATA_LOADED', count: names.length, fromCache: false });
-  } catch (error) {
+  } catch {
     self.postMessage({ type: 'ERROR', message: 'Failed to fetch names' });
   }
 }
@@ -185,7 +185,7 @@ self.onmessage = async (e: MessageEvent) => {
   const { type, payload } = e.data;
 
   switch (type) {
-    case 'INIT':
+    case 'INIT': {
       const localData = await loadFromDB();
       if (localData) {
         cachedNames = localData;
@@ -202,8 +202,9 @@ self.onmessage = async (e: MessageEvent) => {
         await fetchAndCacheNames();
       }
       break;
+    }
 
-    case 'FILTER':
+    case 'FILTER': {
       if (cachedNames.length === 0) {
         pendingFilterOptions = payload; // Queue it
         self.postMessage({ type: 'FILTER_RESULTS', results: [] });
@@ -212,5 +213,6 @@ self.onmessage = async (e: MessageEvent) => {
       const filtered = filterNames(payload);
       self.postMessage({ type: 'FILTER_RESULTS', results: filtered });
       break;
+    }
   }
 };
