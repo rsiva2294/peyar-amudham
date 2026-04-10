@@ -36,4 +36,4 @@ local.properties
 manifest-checksum.txt
 
 # Keystore (Security Risk: Only commit if you really want it backed up in Git)
-# android.keystore
+android.keystore
