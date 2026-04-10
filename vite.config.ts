@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      injectRegister: 'script',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
@@ -44,6 +44,7 @@ export default defineConfig({
         ]
       },
       manifest: {
+        id: '/',
         name: 'PEYAR AMUDHAM',
         short_name: 'PeyarAmudham',
         description: 'Explore 30k+ pure classical Tamil names with profound meanings and ancestral heritage.',
@@ -51,6 +52,20 @@ export default defineConfig({
         background_color: '#0B0E14',
         display: 'standalone',
         orientation: 'portrait',
+        dir: 'ltr',
+        categories: ['education', 'lifestyle', 'reference'],
+        launch_handler: {
+          client_mode: ['navigate-existing', 'auto']
+        },
+        shortcuts: [
+          {
+            name: 'Search Names',
+            short_name: 'Search',
+            description: 'Go to the search screen',
+            url: '/',
+            icons: [{ src: 'pwa-192.png', sizes: '192x192' }]
+          }
+        ],
         icons: [
           {
             src: 'pwa-192.png',
