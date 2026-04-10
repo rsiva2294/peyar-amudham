@@ -1,0 +1,61 @@
+{
+  "packageId": "in.sivakaminathan.peyaramudham",
+  "host": "peyar-amudham.web.app",
+  "name": "PEYAR AMUDHAM",
+  "launcherName": "PeyarAmudham",
+  "display": "standalone",
+  "themeColor": "#0B0E14",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#0B0E14",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://peyar-amudham.web.app/pwa-512.png",
+  "maskableIconUrl": "https://peyar-amudham.web.app/pwa-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:\\Users\\rsiva\\Desktop\\tamil-baby-names\\android.keystore",
+    "alias": "peyar-amudham"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Search Names",
+      "shortName": "Search",
+      "url": "https://peyar-amudham.web.app/",
+      "chosenIconUrl": "https://peyar-amudham.web.app/pwa-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://peyar-amudham.web.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://peyar-amudham.web.app/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [
+    {
+      "sha256Fingerprint": "DF:21:88:78:76:01:25:C4:4A:CE:08:FC:75:D2:A7:90:5F:30:43:A9:AC:A9:62:B8:C4:96:E1:20:FB:48:69:7E"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": [
+    "navigate-existing",
+    "auto"
+  ],
+  "displayOverride": [],
+  "appVersion": "1"
+}

@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "in.sivakaminathan.peyaramudham",
+    "sha256_cert_fingerprints": ["DF:21:88:78:76:01:25:C4:4A:CE:08:FC:75:D2:A7:90:5F:30:43:A9:AC:A9:62:B8:C4:96:E1:20:FB:48:69:7E"]
+  }
+}]

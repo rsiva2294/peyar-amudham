@@ -24,3 +24,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Android / Bubblewrap
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+*.idsig
+local.properties
+manifest-checksum.txt
+
+# Keystore (Security Risk: Only commit if you really want it backed up in Git)
+# android.keystore
