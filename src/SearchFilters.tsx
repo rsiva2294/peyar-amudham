@@ -140,11 +140,11 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         }}>
           {searchType === 'magic' ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
-              <textarea
-                placeholder="Describe the vibe... (e.g. 'pure and linguistic')"
+              <input
+                type="text"
+                placeholder="Describe the vibe..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                rows={1}
                 className="tamil-text"
                 style={{
                   border: 'none',
@@ -153,7 +153,6 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                   fontSize: isDesktop ? '1.05rem' : '0.9rem',
                   color: 'var(--text-dark)',
                   background: 'transparent',
-                  resize: 'none',
                   opacity: 0.9,
                   fontWeight: '500',
                   padding: isDesktop ? '0.4rem 0' : '0.2rem 0'

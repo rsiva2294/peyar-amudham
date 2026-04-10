@@ -11,7 +11,7 @@ export const Header: React.FC<HeaderProps> = ({ showFavoritesOnly, onToggleFavor
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('tamil_baby_names_theme');
     if (saved) return saved as 'light' | 'dark';
-    return 'dark';
+    return 'light';
   });
 
   useEffect(() => {
