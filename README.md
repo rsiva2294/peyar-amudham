@@ -8,14 +8,15 @@
 ![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
 ![PWA](https://img.shields.io/badge/PWA-Ready-orange?logo=pwa)
+![Android](https://img.shields.io/badge/Android-Ready-3DDC84?logo=android)
 
 ---
 
 ## ✨ Key Features
 
 - **📖 31,000+ Pure Names**: A massive, curated archive of traditional names categorized by gender, meaning, and origin.
-- **📱 Premium PWA Experience**: Fully installable on iOS, Android, and Desktop. Works offline with advanced service worker caching.
-- **🪄 Magic AI Search**: Powered by **Gemini 2.5 Flash**, users can describe a "vibe" (e.g., *"A brave warrior from the sea"*) to find semantically matching names.
+- **📱 Android & PWA Experience**: Official Android App available (via TWA). Fully installable on iOS and Desktop. Works offline with advanced service worker caching.
+- **🪄 Vibe Search (AI)**: Powered by **Gemini 2.5 Flash**, users can describe a "vibe" (e.g., *"A brave warrior from the sea"*) to find semantically matching names.
 - **🔍 Granular Search**:
     - **Predicates**: Search by "Starts with", "Contains", or "Ends with".
     - **Language**: Toggle between English and Tamil (அ-வ) starting letters.
@@ -23,7 +24,7 @@
 - **💖 Favorites System**: Persistent local storage for shortlisting names without needing an account.
 - **🎲 Surprise Me**: An immersive discovery tool that pulls unique names from the archive with a single click.
 - **🤝 Contribution Portal**: A built-in system for the community to suggest new names for curation.
-- **🌓 Dark-First Design**: A premium interface featuring heritage-inspired gold, sapphire, and ruby gradients.
+- **🌓 Light-First Design**: A premium, accessible interface featuring heritage-inspired gold, sapphire, and ruby gradients (Dark mode available).
 
 ---
 
@@ -35,7 +36,8 @@
 - **AI Integration**: [Google Generative AI](https://ai.google.dev/) (Gemini 2.5 Flash)
 - **Offline Capabilities**: [Vite PWA Plugin](https://vite-pwa-org.netlify.app/) (Workbox)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Deployment**: Configured for Firebase Hosting
+- **Android Wrapper**: [Google Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap)
+- **Deployment**: [Firebase Hosting](https://firebase.google.com/docs/hosting)
 
 ---
 
@@ -69,6 +71,21 @@ VITE_GEMINI_API_KEY=your_google_gemini_api_key_here
 npm run dev
 ```
 The app will be available at `http://localhost:5173`.
+
+---
+
+## 📱 Android App
+
+Peyar Amudham is available as a native Android application using **Trusted Web Activity (TWA)**.
+
+### Build Instructions
+If you wish to build the Android `.aab` or `.apk` locally:
+1. Ensure you have the `android.keystore` (or generate a new one).
+2. Install the Bubblewrap CLI:
+   ```bash
+   npx @bubblewrap/cli build
+   ```
+3. The generated artifacts will be in the root directory as `app-release-bundle.aab`.
 
 ---
 

@@ -27,6 +27,10 @@ Thank you for your interest in contributing to PEYAR AMUDHAM! We welcome all con
 6. Push to your fork: `git push origin feature/your-feature-name`.
 7. Submit a Pull Request.
 
+### 5. Android Wrapper Contributions
+- The Android app is powered by **Bubblewrap**. 
+- To update Android-specific settings, modify `twa-manifest.json` and run `npx @bubblewrap/cli build` to regenerate the native project.
+
 ## 🛠️ Local Development
 
 1. **Clone your fork**:
