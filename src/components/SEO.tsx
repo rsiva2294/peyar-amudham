@@ -32,6 +32,7 @@ export const SEO: React.FC<SEOProps> = ({ title, description, name, url = 'https
       <title>{siteTitle}</title>
       <meta name="title" content={siteTitle} />
       <meta name="description" content={siteDescription} />
+      <link rel="canonical" href={currentUrl} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />

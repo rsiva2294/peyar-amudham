@@ -76,16 +76,12 @@ The app will be available at `http://localhost:5173`.
 
 ## 📱 Android App
 
-Peyar Amudham is available as a native Android application using **Trusted Web Activity (TWA)**.
-
-### Build Instructions
-If you wish to build the Android `.aab` or `.apk` locally:
-1. Ensure you have the `android.keystore` (or generate a new one).
-2. Install the Bubblewrap CLI:
-   ```bash
-   npx @bubblewrap/cli build
-   ```
 3. The generated artifacts will be in the root directory as `app-release-bundle.aab`.
+
+### Digital Asset Links (TWA)
+For a seamless full-screen experience, the app verifies ownership via:
+- **Location**: `public/.well-known/assetlinks.json`
+- **SHA-256 Fingerprint**: `DF:21...69:7E` (See `STORE_LISTING.md` for full hash).
 
 ---
 
@@ -130,3 +126,4 @@ Distributed under the **MIT License**. See **[LICENSE](LICENSE)** for more infor
 ---
 
 Built with ❤️ for the Tamil Community by rsiva2294.
+For Play Store metadata, see [STORE_LISTING.md](STORE_LISTING.md).
