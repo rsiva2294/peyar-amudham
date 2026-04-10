@@ -259,7 +259,7 @@ function App() {
           Digitally preserved for the pure Tamil community.
         </p>
         <p style={{ fontSize: '0.7rem', opacity: 0.4, fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Independent initiative • Not affiliated with the Govt. of Tamil Nadu
+          Independent initiative • Not affiliated with the Govt. of Tamil Nadu • <a href="/privacy.html" style={{ color: 'inherit', textDecoration: 'underline' }}>Privacy Policy</a>
         </p>
         <p style={{ marginTop: '2.5rem', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.15em', opacity: 0.8, textTransform: 'uppercase' }}>
           Developed by <a href="https://in.linkedin.com/in/sivakaminathan-muthusamy" target="_blank" rel="noopener noreferrer" style={{ 

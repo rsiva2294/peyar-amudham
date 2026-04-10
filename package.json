@@ -15,8 +15,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate_sitemap.js && tsc -b && vite build",
-    "sitemap": "node scripts/generate_sitemap.js",
+    "build": "node --no-deprecation scripts/generate_sitemap.js && tsc -b && vite build",
+    "sitemap": "node --no-deprecation scripts/generate_sitemap.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest"
