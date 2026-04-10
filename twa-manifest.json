@@ -20,8 +20,8 @@
     "path": "C:\\Users\\rsiva\\Desktop\\tamil-baby-names\\android.keystore",
     "alias": "peyar-amudham"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "2",
+  "appVersionCode": 2,
   "shortcuts": [
     {
       "name": "Search Names",
@@ -57,5 +57,5 @@
     "auto"
   ],
   "displayOverride": [],
-  "appVersion": "1"
+  "appVersion": "2"
 }
