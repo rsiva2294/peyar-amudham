@@ -17,6 +17,7 @@
 - **📖 31,000+ Pure Names**: A massive, curated archive of traditional names categorized by gender, meaning, and origin.
 - **📱 Android & PWA Experience**: Official Android App available (via TWA). Fully installable on iOS and Desktop. Works offline with advanced service worker caching.
 - **🪄 Vibe Search (AI)**: Powered by **Gemini 2.5 Flash**, users can describe a "vibe" (e.g., *"A brave warrior from the sea"*) to find semantically matching names.
+- **🔊 High-Fidelity Audio**: Integrated with Google Cloud Text-to-Speech (Chirp 3 HD) for authentic, dynamically cached Tamil pronunciations of every name in the archive.
 - **🔍 Granular Search**:
     - **Predicates**: Search by "Starts with", "Contains", or "Ends with".
     - **Language**: Toggle between English and Tamil (அ-வ) starting letters.
@@ -33,7 +34,7 @@
 - **Frontend**: [React 19](https://react.dev/) + [Vite 8](https://vite.dev/)
 - **Logic**: [TypeScript 5.9](https://www.typescriptlang.org/)
 - **Styling**: Vanilla CSS (Modern CSS Variables, Container Queries, and Glassmorphism)
-- **AI Integration**: [Google Generative AI](https://ai.google.dev/) (Gemini 2.5 Flash)
+- **AI & TTS Integration**: [Google Generative AI](https://ai.google.dev/) (Gemini 2.5 Flash) and [Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech) (Chirp 3 HD voices)
 - **Offline Capabilities**: [Vite PWA Plugin](https://vite-pwa-org.netlify.app/) (Workbox)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Android Wrapper**: [Google Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap)
@@ -63,6 +64,7 @@ npm install
 Create a `.env.local` file in the root directory and add your Gemini API Key:
 ```env
 VITE_GEMINI_API_KEY=your_google_gemini_api_key_here
+VITE_GOOGLE_TTS_API_KEY=your_google_cloud_tts_api_key_here
 ```
 *You can get a free API key at [Google AI Studio](https://aistudio.google.com/).*
 

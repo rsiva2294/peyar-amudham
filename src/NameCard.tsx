@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Heart, Share2 } from 'lucide-react';
+import { Heart, Share2, Volume2 } from 'lucide-react';
 import clsx from 'clsx';
 import type { BabyName } from './types';
+import { playTamilAudio } from './services/ttsService';
 
 interface NameCardProps {
   data: BabyName;
@@ -14,6 +15,7 @@ interface NameCardProps {
 export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFavorite, onShare, style }) => {
   const [isTagsExpanded, setIsTagsExpanded] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+  const [isPronouncing, setIsPronouncing] = useState(false);
 
   React.useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 768);
@@ -31,20 +33,65 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
   return (
     <div className="name-card-container" style={{ ...style, padding: '0.75rem' }}>
       <div className="artifact-card" style={{ height: '100%', padding: '1.75rem', display: 'flex', flexDirection: 'column' }}>
-        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <h2 className="tamil-text text-xl" style={{ marginBottom: '0.3rem', color: 'var(--text-dark)', lineHeight: '1.2' }}>
+        <div className="card-header" style={{ width: '100%', minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+            <h2 className="tamil-text text-xl" style={{ color: 'var(--text-dark)', lineHeight: '1.2', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {data.name_tamil}
             </h2>
-            <p className="text-sm font-bold latin-name" style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              {data.name_english}
-            </p>
+            <button 
+              className="icon-btn"
+              onClick={async () => {
+                if (isPronouncing) return;
+                setIsPronouncing(true);
+                try {
+                  await playTamilAudio(data.name_tamil);
+                } finally {
+                  setIsPronouncing(false);
+                }
+              }}
+              style={{ 
+                color: isPronouncing ? 'var(--primary)' : 'var(--text-muted)',
+                opacity: isPronouncing ? 0.6 : 1,
+                cursor: isPronouncing ? 'wait' : 'pointer',
+                flexShrink: 0
+              }}
+              title="Pronounce name"
+            >
+              <Volume2 size={16} strokeWidth={2.5} />
+            </button>
           </div>
-          <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0, marginLeft: '0.5rem' }}>
+          <p className="text-sm font-bold latin-name" style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {data.name_english}
+          </p>
+        </div>
+
+        <div className="card-chips" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.25rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span className="gender-chip" style={{
+              background: tagBg,
+              color: tagColor,
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.75rem',
+              fontWeight: '900',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              border: `1.5px solid ${tagColor}44`
+            }}>
+              {data.gender}
+            </span>
+            <span className="chip-sep" style={{ color: 'var(--text-muted)', opacity: 0.4 }}>|</span>
+            <span className="length-chip" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {data.length} letters
+            </span>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>
             <button 
               className="icon-btn"
               onClick={() => onShare(data)}
               style={{ color: 'var(--text-muted)' }}
+              title="Share name"
             >
               <Share2 size={16} strokeWidth={2.5} />
             </button>
@@ -56,26 +103,6 @@ export const NameCard: React.FC<NameCardProps> = ({ data, isFavorite, onToggleFa
               <Heart size={16} fill={isFavorite ? 'var(--girl-color)' : 'none'} strokeWidth={isFavorite ? 0 : 2.5} />
             </button>
           </div>
-        </div>
-
-        <div className="card-chips" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.25rem', marginBottom: '1.5rem' }}>
-          <span className="gender-chip" style={{
-            background: tagBg,
-            color: tagColor,
-            padding: '6px 14px',
-            borderRadius: '20px',
-            fontSize: '0.75rem',
-            fontWeight: '900',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            border: `1.5px solid ${tagColor}44`
-          }}>
-            {data.gender}
-          </span>
-          <span className="chip-sep" style={{ color: 'var(--text-muted)', opacity: 0.4 }}>|</span>
-          <span className="length-chip" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {data.length} letters
-          </span>
         </div>
 
         <div className="card-content" style={{ flex: 1 }}>

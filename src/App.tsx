@@ -6,6 +6,7 @@ import { SurpriseModal } from './SurpriseModal';
 import { ContributeModal } from './ContributeModal';
 import { ShareModal } from './ShareModal';
 import { SEO } from './components/SEO';
+import { UpdateToast } from './components/UpdateToast';
 import { useFavorites } from './hooks/useFavorites';
 import { useNamesManager } from './hooks/useNamesManager';
 import { fetchMagicKeywords } from './services/gemini';
@@ -112,6 +113,7 @@ function App() {
   return (
     <div style={{ paddingBottom: '4rem', background: 'var(--bg-color)', minHeight: '100vh' }}>
       <SEO name={sharedName} />
+      <UpdateToast />
       <div className="container">
         <Header 
           showFavoritesOnly={showFavoritesOnly} 
@@ -195,7 +197,7 @@ function App() {
         <div className="container">
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', 
             gap: '1rem' 
           }}>
             {paginatedNames.map((name: BabyName) => (
